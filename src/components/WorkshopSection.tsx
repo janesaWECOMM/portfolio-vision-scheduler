@@ -77,7 +77,7 @@ const workshops: Workshop[] = [{
 const WorkshopSection = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const filteredWorkshops = activeCategory ? workshops.filter(workshop => workshop.category === activeCategory) : workshops;
-  return <section className="px-4 bg-gradient-to-b from-white to-secondary/30 py-[80px]">
+  return <section className="px-4 bg-gradient-to-b from-white to-secondary/30 py-[76px]">
       <div className="container mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="flex justify-center mb-4">
