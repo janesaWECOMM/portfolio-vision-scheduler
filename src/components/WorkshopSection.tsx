@@ -1,127 +1,173 @@
 
 import { useState } from "react";
-import { Check, Clock, Users } from "lucide-react";
+import { Clock, Users, Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
 interface Workshop {
   id: string;
   title: string;
+  category: string;
   description: string;
   duration: string;
   capacity: string;
-  format: "In-person" | "Virtual" | "Hybrid";
-  topics: string[];
+  price: string;
   popular: boolean;
+  image: string;
 }
 
 const workshops: Workshop[] = [
   {
-    id: "innovation-sprint",
-    title: "Innovation Sprint",
-    description: "A high-energy workshop designed to generate breakthrough ideas and solutions for specific business challenges.",
-    duration: "1-2 days",
-    capacity: "10-30 participants",
-    format: "Hybrid",
-    topics: ["Design Thinking", "Rapid Prototyping", "User Testing"],
-    popular: true
+    id: "creative-magic-genai",
+    title: "Creative Magic with GenAI",
+    category: "101 Workshop",
+    description: "Unlock the power of AI for creative work with tools like ChatGPT and Adobe Firefly.",
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 3,000",
+    popular: true,
+    image: "/lovable-uploads/de03f0f5-d4a3-4510-9366-7e1bfb892be7.png"
   },
   {
-    id: "team-synergy",
-    title: "Team Synergy",
-    description: "Build stronger connections and improve collaboration among team members through interactive exercises.",
-    duration: "1 day",
-    capacity: "8-20 participants",
-    format: "In-person",
-    topics: ["Trust Building", "Communication", "Conflict Resolution"],
-    popular: false
+    id: "social-media-launchpad",
+    title: "Your Social Media Launchpad",
+    category: "101 Workshop",
+    description: "Build your personal brand and leverage content marketing trends on social media.",
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 3,000",
+    popular: false,
+    image: "/lovable-uploads/4dd2c0c4-7e03-41f8-bcc2-b0d67a5e25e2.png"
   },
   {
-    id: "leadership-excellence",
-    title: "Leadership Excellence",
-    description: "Develop key leadership competencies and learn to inspire and motivate high-performing teams.",
-    duration: "2 days",
-    capacity: "5-15 participants",
-    format: "Hybrid",
-    topics: ["Emotional Intelligence", "Strategic Thinking", "Coaching Skills"],
-    popular: true
+    id: "pocket-sized-content",
+    title: "Pocket-sized Content Creation",
+    category: "101 Workshop",
+    description: "Unlock your phone's potential to create captivating bite-sized social media content.",
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 3,000",
+    popular: false,
+    image: "/lovable-uploads/bfea2060-5a1f-4f00-893d-a227f094a79b.png"
   },
   {
-    id: "digital-transformation",
-    title: "Digital Transformation",
-    description: "Navigate the challenges of digital change and leverage technology to enhance team performance.",
-    duration: "1-3 days",
-    capacity: "10-30 participants",
-    format: "Virtual",
-    topics: ["Change Management", "Digital Tools", "Agile Methodologies"],
-    popular: false
+    id: "crafting-sticky-stories",
+    title: "Crafting Sticky Stories",
+    category: "Deep-dive Series",
+    description: "Impactful social media narratives and storytelling techniques that captivate audiences.",
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 4,500",
+    popular: true,
+    image: "/lovable-uploads/a73dec9a-5403-453d-8875-4ae3344ca831.png"
+  },
+  {
+    id: "presentations-own-room",
+    title: "Presentations: Own Any Room",
+    category: "Deep-dive Series",
+    description: "Master the art of body language, vocal expression, and confidence for powerful presentations.",
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 4,500",
+    popular: false,
+    image: "/lovable-uploads/01a4f59d-3c7f-4d14-b737-76de3317ff38.png"
+  },
+  {
+    id: "media-training",
+    title: "Media Training",
+    category: "Mastery Level",
+    description: "Professional media training for C-suite executives and leadership roles.",
+    duration: "2 hours",
+    capacity: "Up to 10 pax per session",
+    price: "SGD 10,000",
+    popular: false,
+    image: "/lovable-uploads/87590080-d4e4-45f7-982a-5f9785b379a6.png"
   }
 ];
 
 const WorkshopSection = () => {
-  const [activeFormat, setActiveFormat] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   
-  const filteredWorkshops = activeFormat 
-    ? workshops.filter(workshop => workshop.format === activeFormat)
+  const filteredWorkshops = activeCategory 
+    ? workshops.filter(workshop => workshop.category === activeCategory)
     : workshops;
 
   return (
-    <section className="py-24 px-4">
+    <section className="py-24 px-4 bg-gradient-to-b from-white to-secondary/30">
       <div className="container mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Our <span className="text-gradient">Workshop Programs</span>
+          <div className="flex justify-center mb-4">
+            <span className="text-boost-orange text-5xl font-bold">*</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            #getboosted
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Choose from our carefully designed workshops to address your team's specific needs.
+            Our specialized workshops are designed to supercharge your skills in just 2 hours
           </p>
           
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             <Button 
-              variant={activeFormat === null ? "default" : "outline"}
-              onClick={() => setActiveFormat(null)}
-              className={activeFormat === null ? "button-gradient text-white" : ""}
+              variant={activeCategory === null ? "default" : "outline"}
+              onClick={() => setActiveCategory(null)}
+              className={activeCategory === null ? "button-gradient text-white" : ""}
             >
-              All Formats
+              All Workshops
             </Button>
             <Button 
-              variant={activeFormat === "In-person" ? "default" : "outline"}
-              onClick={() => setActiveFormat("In-person")}
-              className={activeFormat === "In-person" ? "button-gradient text-white" : ""}
+              variant={activeCategory === "101 Workshop" ? "default" : "outline"}
+              onClick={() => setActiveCategory("101 Workshop")}
+              className={activeCategory === "101 Workshop" ? "button-gradient text-white" : ""}
             >
-              In-person
+              101 Workshops
             </Button>
             <Button 
-              variant={activeFormat === "Virtual" ? "default" : "outline"}
-              onClick={() => setActiveFormat("Virtual")}
-              className={activeFormat === "Virtual" ? "button-gradient text-white" : ""}
+              variant={activeCategory === "Deep-dive Series" ? "default" : "outline"}
+              onClick={() => setActiveCategory("Deep-dive Series")}
+              className={activeCategory === "Deep-dive Series" ? "button-gradient text-white" : ""}
             >
-              Virtual
+              Deep-dive Series
             </Button>
             <Button 
-              variant={activeFormat === "Hybrid" ? "default" : "outline"}
-              onClick={() => setActiveFormat("Hybrid")}
-              className={activeFormat === "Hybrid" ? "button-gradient text-white" : ""}
+              variant={activeCategory === "Mastery Level" ? "default" : "outline"}
+              onClick={() => setActiveCategory("Mastery Level")}
+              className={activeCategory === "Mastery Level" ? "button-gradient text-white" : ""}
             >
-              Hybrid
+              Mastery Level
             </Button>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredWorkshops.map((workshop) => (
             <div key={workshop.id} className="glass rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg">
-              <div className="p-6 md:p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-2xl font-bold">{workshop.title}</h3>
-                  {workshop.popular && (
-                    <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90">Popular</Badge>
-                  )}
+              <div className="relative h-48 bg-boost-purple/10 overflow-hidden">
+                {workshop.image && (
+                  <img 
+                    src={workshop.image} 
+                    alt={workshop.title} 
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                {workshop.popular && (
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90 px-3 py-1">
+                      <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
+                    </Badge>
+                  </div>
+                )}
+                <div className="absolute bottom-4 left-4">
+                  <Badge variant="secondary" className="bg-boost-purple/20 backdrop-blur-sm text-white">
+                    {workshop.category}
+                  </Badge>
                 </div>
-                <p className="text-muted-foreground mb-6">{workshop.description}</p>
+              </div>
+              
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-2">{workshop.title}</h3>
+                <p className="text-muted-foreground mb-4">{workshop.description}</p>
                 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3 mb-4">
                   <div className="flex items-center text-sm">
                     <Clock size={18} className="mr-2 text-boost-purple" />
                     <span>{workshop.duration}</span>
@@ -132,30 +178,15 @@ const WorkshopSection = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {workshop.topics.map((topic, index) => (
-                    <div key={index} className="flex items-center text-sm bg-secondary px-3 py-1 rounded-full">
-                      <Check size={14} className="mr-1 text-boost-purple" />
-                      {topic}
-                    </div>
-                  ))}
-                </div>
-                
                 <div className="flex justify-between items-center">
-                  <Badge variant="outline">{workshop.format}</Badge>
-                  <Button asChild>
-                    <Link to={`/schedule?workshop=${workshop.id}`}>Schedule Now</Link>
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">{workshop.price}</Badge>
+                  <Button>
+                    Schedule Now
                   </Button>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-        
-        <div className="text-center mt-12">
-          <Button className="button-gradient text-white px-8 py-6 text-lg rounded-full" asChild>
-            <Link to="/workshops">View All Workshop Programs</Link>
-          </Button>
         </div>
       </div>
     </section>

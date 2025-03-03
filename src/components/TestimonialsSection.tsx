@@ -8,36 +8,25 @@ interface Testimonial {
   author: string;
   position: string;
   company: string;
+  companyLogo?: string;
   rating: number;
 }
 
 const testimonials: Testimonial[] = [
   {
-    content: "The innovation workshop transformed how our team approaches problem-solving. We've seen a 30% increase in successful project outcomes since implementing the strategies.",
-    author: "Sarah Johnson",
-    position: "Head of Product",
-    company: "TechInnovate",
+    content: "As someone with a personal interest in AI, I was excited to learn more about GenAI and ChatGPT in the highly interactive, cosy setting. It was insightful and useful to learn how these tools can be applied in the workplace, especially with the hands-on activities and cheat sheets!",
+    author: "Margaret Tan",
+    position: "Marketing Manager",
+    company: "IMDA",
+    companyLogo: "/lovable-uploads/2e27ac3e-af50-4d23-89f3-1255623f32ff.png",
     rating: 5
   },
   {
-    content: "Boost's leadership program gave our managers the tools they needed to effectively guide their teams through our digital transformation. Highly recommended!",
-    author: "Michael Chen",
-    position: "CTO",
-    company: "Future Systems",
-    rating: 5
-  },
-  {
-    content: "The team building workshop was exactly what we needed after transitioning to a hybrid work model. It helped restore our collaborative culture despite the physical distance.",
-    author: "Lisa Rodriguez",
-    position: "HR Director",
-    company: "Global Connect",
-    rating: 4
-  },
-  {
-    content: "Our communication challenges were significantly reduced after Boost's workshop. The facilitators created a safe space for honest conversation and growth.",
-    author: "David Kim",
-    position: "Operations Manager",
-    company: "Streamline Inc.",
+    content: "I was impressed by the facilitators' expertise and industry knowledge. It was clear that they were experienced professionals who are up to date with the latest market trends. I only wish that the session could have been longer!",
+    author: "Kenneth Ng",
+    position: "Manager, Content Development & Strategy",
+    company: "Sembcorp Industries",
+    companyLogo: "/lovable-uploads/2c72ee4d-a664-4080-83e4-11cc69257155.png",
     rating: 5
   }
 ];
@@ -81,17 +70,52 @@ const TestimonialsSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 px-4 bg-gradient-to-b from-background to-secondary/50 opacity-0"
+      className="py-24 px-4 bg-gradient-to-b from-white to-boost-purple/5 opacity-0"
       style={{ animationFillMode: 'forwards', animationDelay: "200ms" }}
     >
       <div className="container mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            What Our <span className="text-gradient">Clients Say</span>
+          <div className="flex justify-center mb-4">
+            <span className="text-boost-orange text-5xl font-bold">*</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Our Boosties Say...
           </h2>
-          <p className="text-xl text-muted-foreground">
-            Real feedback from organizations that have experienced our workshops.
+          <p className="text-xl text-muted-foreground mb-4">
+            Read what our attendees have to say about their Boost experience
           </p>
+          <div className="flex justify-center space-x-4">
+            <div className="flex items-center">
+              <div className="text-boost-orange mr-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={16} className="inline-block fill-current" />
+                ))}
+              </div>
+              <span className="text-2xl font-bold text-boost-orange">4.8/5</span>
+            </div>
+            <div className="text-muted-foreground">|</div>
+            <div className="flex items-center">
+              <div className="text-boost-orange mr-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={16} className="inline-block fill-current" />
+                ))}
+              </div>
+              <span className="text-2xl font-bold text-boost-orange">4.5/5</span>
+            </div>
+            <div className="text-muted-foreground">|</div>
+            <div className="flex items-center">
+              <div className="text-boost-orange mr-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={16} className="inline-block fill-current" />
+                ))}
+              </div>
+              <span className="text-2xl font-bold text-boost-orange">4.5/5</span>
+            </div>
+          </div>
+          <div className="text-xs text-muted-foreground mt-2">
+            <p>Living Room Conversations | Workshop Activities | Facilitators and Trainers</p>
+            <p className="mt-1">*All ratings presented are directly from the feedback of Boost attendees.</p>
+          </div>
         </div>
 
         <div className="relative max-w-4xl mx-auto">
@@ -106,11 +130,20 @@ const TestimonialsSection = () => {
               "{testimonials[currentIndex].content}"
             </blockquote>
             
-            <div>
-              <p className="font-semibold text-lg">{testimonials[currentIndex].author}</p>
-              <p className="text-muted-foreground">
-                {testimonials[currentIndex].position}, {testimonials[currentIndex].company}
-              </p>
+            <div className="flex items-center">
+              {testimonials[currentIndex].companyLogo && (
+                <img 
+                  src={testimonials[currentIndex].companyLogo} 
+                  alt={testimonials[currentIndex].company}
+                  className="h-12 mr-4"
+                />
+              )}
+              <div>
+                <p className="font-semibold text-lg">{testimonials[currentIndex].author}</p>
+                <p className="text-muted-foreground">
+                  {testimonials[currentIndex].position}, {testimonials[currentIndex].company}
+                </p>
+              </div>
             </div>
             
             <div className="absolute right-8 bottom-8 md:right-12 md:bottom-12 flex space-x-2">

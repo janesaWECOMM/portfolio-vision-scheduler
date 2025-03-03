@@ -47,65 +47,9 @@ const Navbar = () => {
           <span className="text-boost-orange text-2xl font-bold">∞</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            to="home"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
-          >
-            Home
-          </Link>
-          <Link
-            to="workshops"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
-          >
-            Workshops
-          </Link>
-          <Link
-            to="features"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
-          >
-            Features
-          </Link>
-          <Link
-            to="testimonials"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
-          >
-            Testimonials
-          </Link>
-          <Button className="button-gradient text-white">
-            <Link
-              to="contact"
-              spy={true}
-              smooth={true}
-              offset={-70}
-              duration={500}
-              className="cursor-pointer"
-            >
-              Contact Us
-            </Link>
-          </Button>
-        </nav>
-
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-foreground"
+          className="text-foreground"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -147,7 +91,7 @@ const Navbar = () => {
             className="text-foreground hover:text-boost-purple transition-colors px-4 py-2 cursor-pointer"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Features
+            Why Boost?
           </Link>
           <Link
             to="testimonials"
