@@ -22,8 +22,8 @@ const Navbar = () => {
   return <header className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4", isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent")}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="home" spy={true} smooth={true} offset={-70} duration={500} className="flex items-center space-x-2 cursor-pointer">
-          <span className="font-bold text-2xl text-slate-50">Boost</span>
-          <span className="text-boost-orange text-2xl font-bold">∞</span>
+          <span className="font-bold text-[boost-deep-purple] text-boost-orange">Boost</span>
+          <span className="font-bold text-orange-300 text-[boost-light-orange]">∞</span>
         </Link>
 
         {/* Mobile Menu Button */}
