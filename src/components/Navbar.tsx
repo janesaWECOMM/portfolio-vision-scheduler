@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from "react-scroll";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,7 +35,14 @@ const Navbar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
+        <Link
+          to="home"
+          spy={true}
+          smooth={true}
+          offset={-70}
+          duration={500}
+          className="flex items-center space-x-2 cursor-pointer"
+        >
           <span className="font-bold text-2xl text-boost-purple">Boost</span>
           <span className="text-boost-orange text-2xl font-bold">∞</span>
         </Link>
@@ -43,31 +50,56 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link
-            to="/"
-            className="text-foreground hover:text-boost-purple transition-colors"
+            to="home"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
           >
             Home
           </Link>
           <Link
-            to="/workshops"
-            className="text-foreground hover:text-boost-purple transition-colors"
+            to="workshops"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
           >
             Workshops
           </Link>
           <Link
-            to="/about"
-            className="text-foreground hover:text-boost-purple transition-colors"
+            to="features"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
           >
-            About
+            Features
           </Link>
           <Link
-            to="/schedule"
-            className="text-foreground hover:text-boost-purple transition-colors"
+            to="testimonials"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors cursor-pointer"
           >
-            Schedule
+            Testimonials
           </Link>
-          <Button className="button-gradient text-white" asChild>
-            <Link to="/contact">Contact Us</Link>
+          <Button className="button-gradient text-white">
+            <Link
+              to="contact"
+              spy={true}
+              smooth={true}
+              offset={-70}
+              duration={500}
+              className="cursor-pointer"
+            >
+              Contact Us
+            </Link>
           </Button>
         </nav>
 
@@ -85,40 +117,60 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden glass absolute top-full left-0 right-0 p-4 flex flex-col space-y-4 animate-fade-in">
           <Link
-            to="/"
-            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2"
+            to="home"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2 cursor-pointer"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Home
           </Link>
           <Link
-            to="/workshops"
-            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2"
+            to="workshops"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2 cursor-pointer"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Workshops
           </Link>
           <Link
-            to="/about"
-            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2"
+            to="features"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2 cursor-pointer"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            About
+            Features
           </Link>
           <Link
-            to="/schedule"
-            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2"
+            to="testimonials"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="text-foreground hover:text-boost-purple transition-colors px-4 py-2 cursor-pointer"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Schedule
+            Testimonials
           </Link>
-          <Button
-            className="button-gradient text-white w-full"
-            asChild
+          <Link
+            to="contact"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={500}
+            className="button-gradient text-white px-4 py-2 rounded-md cursor-pointer text-center"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Link to="/contact">Contact Us</Link>
-          </Button>
+            Contact Us
+          </Link>
         </div>
       )}
     </header>

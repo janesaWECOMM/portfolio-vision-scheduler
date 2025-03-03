@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link } from "react-scroll";
 import { Linkedin, Facebook, Twitter, Instagram, Mail } from "lucide-react";
 
 const Footer = () => {
@@ -10,7 +10,14 @@ const Footer = () => {
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <Link to="/" className="flex items-center space-x-2 mb-4">
+            <Link 
+              to="home"
+              spy={true}
+              smooth={true}
+              offset={-70}
+              duration={500}
+              className="flex items-center space-x-2 mb-4 cursor-pointer"
+            >
               <span className="font-bold text-2xl text-boost-purple">Boost</span>
               <span className="text-boost-orange text-2xl font-bold">∞</span>
             </Link>
@@ -37,22 +44,50 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Programs</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/workshops/innovation-sprint" className="text-muted-foreground hover:text-boost-purple transition-colors">
+                <Link 
+                  to="workshops" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
                   Innovation Sprint
                 </Link>
               </li>
               <li>
-                <Link to="/workshops/team-synergy" className="text-muted-foreground hover:text-boost-purple transition-colors">
+                <Link 
+                  to="workshops" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
                   Team Synergy
                 </Link>
               </li>
               <li>
-                <Link to="/workshops/leadership-excellence" className="text-muted-foreground hover:text-boost-purple transition-colors">
+                <Link 
+                  to="workshops" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
                   Leadership Excellence
                 </Link>
               </li>
               <li>
-                <Link to="/workshops/digital-transformation" className="text-muted-foreground hover:text-boost-purple transition-colors">
+                <Link 
+                  to="workshops" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
                   Digital Transformation
                 </Link>
               </li>
@@ -60,26 +95,54 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Company</h3>
+            <h3 className="font-semibold text-lg mb-4">Site Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/about" className="text-muted-foreground hover:text-boost-purple transition-colors">
-                  About Us
+                <Link 
+                  to="home" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
+                  Home
                 </Link>
               </li>
               <li>
-                <Link to="/team" className="text-muted-foreground hover:text-boost-purple transition-colors">
-                  Our Team
+                <Link 
+                  to="workshops" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
+                  Workshops
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-muted-foreground hover:text-boost-purple transition-colors">
-                  Blog
+                <Link 
+                  to="features" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
+                  Features
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-muted-foreground hover:text-boost-purple transition-colors">
-                  Contact
+                <Link 
+                  to="testimonials" 
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  className="text-muted-foreground hover:text-boost-purple transition-colors cursor-pointer"
+                >
+                  Testimonials
                 </Link>
               </li>
             </ul>
@@ -116,12 +179,12 @@ const Footer = () => {
             © {currentYear} Boost Workshops. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-boost-purple transition-colors">
+            <a href="#" className="text-sm text-muted-foreground hover:text-boost-purple transition-colors">
               Privacy Policy
-            </Link>
-            <Link to="/terms" className="text-sm text-muted-foreground hover:text-boost-purple transition-colors">
+            </a>
+            <a href="#" className="text-sm text-muted-foreground hover:text-boost-purple transition-colors">
               Terms of Service
-            </Link>
+            </a>
           </div>
         </div>
       </div>
