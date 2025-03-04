@@ -17,6 +17,25 @@ interface Workshop {
   image: string;
 }
 
+// Category descriptions
+const categoryDescriptions = {
+  "101 Workshop": {
+    title: "101 Workshops",
+    description: "Our introductory workshops are perfect for teams looking to build fundamental skills in communication, creativity, and digital media. These accessible 2-hour sessions provide practical tools that participants can immediately apply to their work.",
+    icon: <Book className="w-8 h-8 text-boost-purple mb-4" />
+  },
+  "Deep-dive Series": {
+    title: "Deep-dive Series",
+    description: "Take your team's skills to the next level with our specialized deep-dive workshops. These intermediate sessions explore advanced concepts in storytelling, presentation skills, and feedback techniques that will transform how your team communicates.",
+    icon: <Presentation className="w-8 h-8 text-boost-purple mb-4" />
+  },
+  "Mastery Level": {
+    title: "Mastery Level",
+    description: "Designed for leadership and senior positions, our mastery level workshops provide executive-grade training in presence, delegation, and coaching. These premium sessions are limited to smaller groups to ensure personalized attention.",
+    icon: <GraduationCap className="w-8 h-8 text-boost-purple mb-4" />
+  }
+};
+
 const workshops: Workshop[] = [
   // 101 Workshops
   {
@@ -186,32 +205,59 @@ const WorkshopSection = () => {
             </TabsContent>
             
             <TabsContent value="101" className="mt-0">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {workshops
-                  .filter(workshop => workshop.category === "101 Workshop")
-                  .map(workshop => (
-                    <WorkshopCard key={workshop.id} workshop={workshop} />
-                  ))}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-4 glass rounded-xl p-8">
+                  {categoryDescriptions["101 Workshop"].icon}
+                  <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
+                  <p className="text-muted-foreground">{categoryDescriptions["101 Workshop"].description}</p>
+                </div>
+                <div className="lg:col-span-8">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {workshops
+                      .filter(workshop => workshop.category === "101 Workshop")
+                      .map(workshop => (
+                        <WorkshopCard key={workshop.id} workshop={workshop} />
+                      ))}
+                  </div>
+                </div>
               </div>
             </TabsContent>
             
             <TabsContent value="deep-dive" className="mt-0">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {workshops
-                  .filter(workshop => workshop.category === "Deep-dive Series")
-                  .map(workshop => (
-                    <WorkshopCard key={workshop.id} workshop={workshop} />
-                  ))}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-4 glass rounded-xl p-8">
+                  {categoryDescriptions["Deep-dive Series"].icon}
+                  <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
+                  <p className="text-muted-foreground">{categoryDescriptions["Deep-dive Series"].description}</p>
+                </div>
+                <div className="lg:col-span-8">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {workshops
+                      .filter(workshop => workshop.category === "Deep-dive Series")
+                      .map(workshop => (
+                        <WorkshopCard key={workshop.id} workshop={workshop} />
+                      ))}
+                  </div>
+                </div>
               </div>
             </TabsContent>
             
             <TabsContent value="mastery" className="mt-0">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {workshops
-                  .filter(workshop => workshop.category === "Mastery Level")
-                  .map(workshop => (
-                    <WorkshopCard key={workshop.id} workshop={workshop} />
-                  ))}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-4 glass rounded-xl p-8">
+                  {categoryDescriptions["Mastery Level"].icon}
+                  <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
+                  <p className="text-muted-foreground">{categoryDescriptions["Mastery Level"].description}</p>
+                </div>
+                <div className="lg:col-span-8">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {workshops
+                      .filter(workshop => workshop.category === "Mastery Level")
+                      .map(workshop => (
+                        <WorkshopCard key={workshop.id} workshop={workshop} />
+                      ))}
+                  </div>
+                </div>
               </div>
             </TabsContent>
           </Tabs>
@@ -239,7 +285,7 @@ const WorkshopCard = ({ workshop }: { workshop: Workshop }) => {
       </div>
       
       <div className="p-6">
-        <h3 className="text-2xl font-bold mb-2">{workshop.title}</h3>
+        <h3 className="text-xl font-bold mb-2">{workshop.title}</h3>
         <p className="text-muted-foreground mb-4">{workshop.description}</p>
         
         <div className="space-y-3 mb-4">
