@@ -22,17 +22,26 @@ const categoryDescriptions = {
   "101 Workshop": {
     title: "101 Workshops",
     description: "Our introductory workshops are perfect for teams looking to build fundamental skills in communication, creativity, and digital media. These accessible 2-hour sessions provide practical tools that participants can immediately apply to their work.",
-    icon: <Book className="w-8 h-8 text-boost-purple mb-4" />
+    icon: <Book className="w-8 h-8 text-boost-purple mb-4" />,
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 3,000"
   },
   "Deep-dive Series": {
     title: "Deep-dive Series",
     description: "Take your team's skills to the next level with our specialized deep-dive workshops. These intermediate sessions explore advanced concepts in storytelling, presentation skills, and feedback techniques that will transform how your team communicates.",
-    icon: <Presentation className="w-8 h-8 text-boost-purple mb-4" />
+    icon: <Presentation className="w-8 h-8 text-boost-purple mb-4" />,
+    duration: "2 hours",
+    capacity: "Up to 20 pax per session",
+    price: "SGD 4,500"
   },
   "Mastery Level": {
     title: "Mastery Level",
     description: "Designed for leadership and senior positions, our mastery level workshops provide executive-grade training in presence, delegation, and coaching. These premium sessions are limited to smaller groups to ensure personalized attention.",
-    icon: <GraduationCap className="w-8 h-8 text-boost-purple mb-4" />
+    icon: <GraduationCap className="w-8 h-8 text-boost-purple mb-4" />,
+    duration: "2 hours",
+    capacity: "Up to 10 pax per session",
+    price: "SGD 10,000"
   }
 };
 
@@ -209,14 +218,29 @@ const WorkshopSection = () => {
                 <div className="lg:col-span-4 glass rounded-xl p-8">
                   {categoryDescriptions["101 Workshop"].icon}
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
-                  <p className="text-muted-foreground">{categoryDescriptions["101 Workshop"].description}</p>
+                  <p className="text-muted-foreground mb-6">{categoryDescriptions["101 Workshop"].description}</p>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center text-sm">
+                      <Clock size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["101 Workshop"].duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Users size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["101 Workshop"].capacity}</span>
+                    </div>
+                  </div>
+                  
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">
+                    {categoryDescriptions["101 Workshop"].price}
+                  </Badge>
                 </div>
                 <div className="lg:col-span-8">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {workshops
                       .filter(workshop => workshop.category === "101 Workshop")
                       .map(workshop => (
-                        <WorkshopCard key={workshop.id} workshop={workshop} />
+                        <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
                       ))}
                   </div>
                 </div>
@@ -228,14 +252,29 @@ const WorkshopSection = () => {
                 <div className="lg:col-span-4 glass rounded-xl p-8">
                   {categoryDescriptions["Deep-dive Series"].icon}
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
-                  <p className="text-muted-foreground">{categoryDescriptions["Deep-dive Series"].description}</p>
+                  <p className="text-muted-foreground mb-6">{categoryDescriptions["Deep-dive Series"].description}</p>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center text-sm">
+                      <Clock size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Deep-dive Series"].duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Users size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Deep-dive Series"].capacity}</span>
+                    </div>
+                  </div>
+                  
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">
+                    {categoryDescriptions["Deep-dive Series"].price}
+                  </Badge>
                 </div>
                 <div className="lg:col-span-8">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {workshops
                       .filter(workshop => workshop.category === "Deep-dive Series")
                       .map(workshop => (
-                        <WorkshopCard key={workshop.id} workshop={workshop} />
+                        <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
                       ))}
                   </div>
                 </div>
@@ -247,14 +286,29 @@ const WorkshopSection = () => {
                 <div className="lg:col-span-4 glass rounded-xl p-8">
                   {categoryDescriptions["Mastery Level"].icon}
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
-                  <p className="text-muted-foreground">{categoryDescriptions["Mastery Level"].description}</p>
+                  <p className="text-muted-foreground mb-6">{categoryDescriptions["Mastery Level"].description}</p>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center text-sm">
+                      <Clock size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Mastery Level"].duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Users size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Mastery Level"].capacity}</span>
+                    </div>
+                  </div>
+                  
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">
+                    {categoryDescriptions["Mastery Level"].price}
+                  </Badge>
                 </div>
                 <div className="lg:col-span-8">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {workshops
                       .filter(workshop => workshop.category === "Mastery Level")
                       .map(workshop => (
-                        <WorkshopCard key={workshop.id} workshop={workshop} />
+                        <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
                       ))}
                   </div>
                 </div>
@@ -306,6 +360,24 @@ const WorkshopCard = ({ workshop }: { workshop: Workshop }) => {
           </Button>
         </div>
       </div>
+    </div>
+  );
+};
+
+// New simplified workshop card component
+const SimpleWorkshopCard = ({ workshop }: { workshop: Workshop }) => {
+  return (
+    <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg">
+      {workshop.popular && (
+        <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90 px-3 py-1 mb-3">
+          <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
+        </Badge>
+      )}
+      <h3 className="text-xl font-bold mb-2">{workshop.title}</h3>
+      <p className="text-muted-foreground mb-4">{workshop.description}</p>
+      <Button size="sm">
+        Schedule Now
+      </Button>
     </div>
   );
 };
