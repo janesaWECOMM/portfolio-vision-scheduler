@@ -175,7 +175,8 @@ const workshops: Workshop[] = [
 ];
 
 const WorkshopSection = () => {
-  return <section className="px-4 bg-gradient-to-b from-white to-secondary/30 py-[76px]">
+  return (
+    <section className="px-4 bg-gradient-to-b from-white to-secondary/30 py-[76px]">
       <div className="container mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="flex justify-center mb-4">
@@ -186,11 +187,8 @@ const WorkshopSection = () => {
           </h2>
           <p className="text-xl text-muted-foreground mb-8">Our specialised workshops are designed to supercharge your skills in just 2 hours</p>
           
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid grid-cols-4 mb-8">
-              <TabsTrigger value="all" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                All
-              </TabsTrigger>
+          <Tabs defaultValue="101" className="w-full">
+            <TabsList className="grid grid-cols-3 mb-8">
               <TabsTrigger value="101" className="data-[state=active]:button-gradient data-[state=active]:text-white">
                 <Book className="w-4 h-4 mr-1" />
                 101 Workshops
@@ -204,14 +202,6 @@ const WorkshopSection = () => {
                 Mastery Level
               </TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="all" className="mt-0">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {workshops.map(workshop => (
-                  <WorkshopCard key={workshop.id} workshop={workshop} />
-                ))}
-              </div>
-            </TabsContent>
             
             <TabsContent value="101" className="mt-0">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -317,50 +307,7 @@ const WorkshopSection = () => {
           </Tabs>
         </div>
       </div>
-    </section>;
-};
-
-// Extract the workshop card into a separate component for better readability
-const WorkshopCard = ({ workshop }: { workshop: Workshop }) => {
-  return (
-    <div key={workshop.id} className="glass rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg">
-      <div className="relative h-48 bg-boost-purple/10 overflow-hidden">
-        {workshop.image && <img src={workshop.image} alt={workshop.title} className="w-full h-full object-cover" />}
-        {workshop.popular && <div className="absolute top-4 right-4">
-            <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90 px-3 py-1">
-              <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
-            </Badge>
-          </div>}
-        <div className="absolute bottom-4 left-4">
-          <Badge variant="secondary" className="bg-boost-purple/20 backdrop-blur-sm text-white">
-            {workshop.category}
-          </Badge>
-        </div>
-      </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-2">{workshop.title}</h3>
-        <p className="text-muted-foreground mb-4">{workshop.description}</p>
-        
-        <div className="space-y-3 mb-4">
-          <div className="flex items-center text-sm">
-            <Clock size={18} className="mr-2 text-boost-purple" />
-            <span>{workshop.duration}</span>
-          </div>
-          <div className="flex items-center text-sm">
-            <Users size={18} className="mr-2 text-boost-purple" />
-            <span>{workshop.capacity}</span>
-          </div>
-        </div>
-        
-        <div className="flex justify-between items-center">
-          <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">{workshop.price}</Badge>
-          <Button>
-            Schedule Now
-          </Button>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
 
