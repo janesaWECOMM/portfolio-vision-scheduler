@@ -1,6 +1,4 @@
-
-import { useState } from "react";
-import { Clock, Users, Check, Star, Book, GraduationCap, Presentation } from "lucide-react";
+import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
