@@ -16,8 +16,8 @@ const Index = () => {
       <main className="flex-1">
         <Element name="home">
           <HeroSection />
+          <TeaserVideoSection />
         </Element>
-        <TeaserVideoSection />
         <Element name="features">
           <FeaturesSection />
         </Element>
