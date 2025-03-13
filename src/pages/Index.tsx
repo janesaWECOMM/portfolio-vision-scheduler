@@ -17,11 +17,11 @@ const Index = () => {
         <Element name="home">
           <HeroSection />
         </Element>
-        <Element name="workshops">
-          <WorkshopSection />
-        </Element>
         <Element name="features">
           <FeaturesSection />
+        </Element>
+        <Element name="workshops">
+          <WorkshopSection />
         </Element>
         <Element name="testimonials">
           <TestimonialsSection />
