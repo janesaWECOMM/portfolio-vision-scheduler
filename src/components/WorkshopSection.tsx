@@ -15,7 +15,6 @@ interface Workshop {
   image: string;
 }
 
-// Category descriptions
 const categoryDescriptions = {
   "101 Workshop": {
     title: "101 Workshops",
@@ -44,7 +43,6 @@ const categoryDescriptions = {
 };
 
 const workshops: Workshop[] = [
-  // 101 Workshops
   {
     id: "creative-magic-genai",
     title: "Creative Magic with GenAI",
@@ -90,7 +88,6 @@ const workshops: Workshop[] = [
     image: "/lovable-uploads/2c72ee4d-a664-4080-83e4-11cc69257155.png"
   },
   
-  // Deep-dive Series
   {
     id: "crafting-sticky-stories",
     title: "Crafting Sticky Stories",
@@ -125,7 +122,6 @@ const workshops: Workshop[] = [
     image: "/lovable-uploads/2e27ac3e-af50-4d23-89f3-1255623f32ff.png"
   },
   
-  // Mastery Level
   {
     id: "media-training",
     title: "Media Training",
@@ -309,17 +305,18 @@ const WorkshopSection = () => {
   );
 };
 
-// New simplified workshop card component
 const SimpleWorkshopCard = ({ workshop }: { workshop: Workshop }) => {
   return (
-    <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg">
-      {workshop.popular && (
-        <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90 px-3 py-1 mb-3">
-          <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
-        </Badge>
-      )}
-      <h3 className="text-xl font-bold mb-2">{workshop.title}</h3>
-      <p className="text-muted-foreground mb-4">{workshop.description}</p>
+    <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg flex flex-col h-full">
+      <div className="mb-auto">
+        {workshop.popular && (
+          <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90 px-3 py-1 mb-4">
+            <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
+          </Badge>
+        )}
+        <h3 className="text-xl font-bold mb-3">{workshop.title}</h3>
+        <p className="text-muted-foreground mb-5">{workshop.description}</p>
+      </div>
       <Button size="sm">
         Schedule Now
       </Button>
