@@ -1,3 +1,4 @@
+
 import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -203,20 +204,22 @@ const WorkshopSection = () => {
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["101 Workshop"].description}</p>
                   
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-sm">
-                      <Clock size={18} className="mr-2 text-boost-purple" />
-                      <span>{categoryDescriptions["101 Workshop"].duration}</span>
+                  <div className="flex justify-between items-center mb-6">
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm">
+                        <Clock size={18} className="mr-2 text-boost-purple" />
+                        <span>{categoryDescriptions["101 Workshop"].duration}</span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <Users size={18} className="mr-2 text-boost-purple" />
+                        <span>{categoryDescriptions["101 Workshop"].capacity}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <Users size={18} className="mr-2 text-boost-purple" />
-                      <span>{categoryDescriptions["101 Workshop"].capacity}</span>
-                    </div>
+                    
+                    <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
+                      {categoryDescriptions["101 Workshop"].price}
+                    </Badge>
                   </div>
-                  
-                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">
-                    {categoryDescriptions["101 Workshop"].price}
-                  </Badge>
                 </div>
                 <div className="lg:col-span-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -236,20 +239,22 @@ const WorkshopSection = () => {
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["Deep-dive Series"].description}</p>
                   
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-sm">
-                      <Clock size={18} className="mr-2 text-boost-purple" />
-                      <span>{categoryDescriptions["Deep-dive Series"].duration}</span>
+                  <div className="flex justify-between items-center mb-6">
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm">
+                        <Clock size={18} className="mr-2 text-boost-purple" />
+                        <span>{categoryDescriptions["Deep-dive Series"].duration}</span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <Users size={18} className="mr-2 text-boost-purple" />
+                        <span>{categoryDescriptions["Deep-dive Series"].capacity}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <Users size={18} className="mr-2 text-boost-purple" />
-                      <span>{categoryDescriptions["Deep-dive Series"].capacity}</span>
-                    </div>
+                    
+                    <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
+                      {categoryDescriptions["Deep-dive Series"].price}
+                    </Badge>
                   </div>
-                  
-                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">
-                    {categoryDescriptions["Deep-dive Series"].price}
-                  </Badge>
                 </div>
                 <div className="lg:col-span-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -269,20 +274,22 @@ const WorkshopSection = () => {
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["Mastery Level"].description}</p>
                   
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-sm">
-                      <Clock size={18} className="mr-2 text-boost-purple" />
-                      <span>{categoryDescriptions["Mastery Level"].duration}</span>
+                  <div className="flex justify-between items-center mb-6">
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm">
+                        <Clock size={18} className="mr-2 text-boost-purple" />
+                        <span>{categoryDescriptions["Mastery Level"].duration}</span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <Users size={18} className="mr-2 text-boost-purple" />
+                        <span>{categoryDescriptions["Mastery Level"].capacity}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <Users size={18} className="mr-2 text-boost-purple" />
-                      <span>{categoryDescriptions["Mastery Level"].capacity}</span>
-                    </div>
+                    
+                    <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
+                      {categoryDescriptions["Mastery Level"].price}
+                    </Badge>
                   </div>
-                  
-                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange">
-                    {categoryDescriptions["Mastery Level"].price}
-                  </Badge>
                 </div>
                 <div className="lg:col-span-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
