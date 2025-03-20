@@ -313,7 +313,7 @@ const SimpleWorkshopCard = ({ workshop }: { workshop: Workshop }) => {
   return (
     <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg flex flex-col h-full items-center justify-center text-center relative">
       {workshop.popular && (
-        <Badge className="bg-boost-orange text-white hover:bg-boost-orange/90 px-3 py-1 absolute top-4 right-4">
+        <Badge className="bg-boost-orange text-white px-3 py-1 absolute top-2 right-2">
           <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
         </Badge>
       )}
