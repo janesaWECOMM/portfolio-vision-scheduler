@@ -1,8 +1,8 @@
-
 import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Workshop {
   id: string;
@@ -170,6 +170,8 @@ const workshops: Workshop[] = [
 ];
 
 const WorkshopSection = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <section className="px-4 bg-gradient-to-b from-white to-secondary/30 py-[76px]">
       <div className="container mx-auto">
@@ -199,8 +201,8 @@ const WorkshopSection = () => {
             </TabsList>
             
             <TabsContent value="101" className="mt-0">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+              <div className="grid grid-cols-1 gap-8">
+                <div className="lg:sticky lg:top-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["101 Workshop"].description}</p>
                   
@@ -221,7 +223,7 @@ const WorkshopSection = () => {
                     </Badge>
                   </div>
                 </div>
-                <div className="lg:col-span-8">
+                <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {workshops
                       .filter(workshop => workshop.category === "101 Workshop")
@@ -234,8 +236,8 @@ const WorkshopSection = () => {
             </TabsContent>
             
             <TabsContent value="deep-dive" className="mt-0">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+              <div className="grid grid-cols-1 gap-8">
+                <div className="lg:sticky lg:top-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["Deep-dive Series"].description}</p>
                   
@@ -256,7 +258,7 @@ const WorkshopSection = () => {
                     </Badge>
                   </div>
                 </div>
-                <div className="lg:col-span-8">
+                <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {workshops
                       .filter(workshop => workshop.category === "Deep-dive Series")
@@ -269,8 +271,8 @@ const WorkshopSection = () => {
             </TabsContent>
             
             <TabsContent value="mastery" className="mt-0">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+              <div className="grid grid-cols-1 gap-8">
+                <div className="lg:sticky lg:top-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["Mastery Level"].description}</p>
                   
@@ -291,7 +293,7 @@ const WorkshopSection = () => {
                     </Badge>
                   </div>
                 </div>
-                <div className="lg:col-span-8">
+                <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {workshops
                       .filter(workshop => workshop.category === "Mastery Level")
