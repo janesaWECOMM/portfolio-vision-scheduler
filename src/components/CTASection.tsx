@@ -1,10 +1,13 @@
 
+import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
+import { SchedulingDialog } from "./SchedulingDialog";
 
 const CTASection = () => {
   const isMobile = useIsMobile();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   return (
     <section className="py-16 md:py-24 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
@@ -16,11 +19,17 @@ const CTASection = () => {
           Schedule a consultation to discuss how our workshops can transform your team's capabilities.
         </p>
         
-        <Button size={isMobile ? "default" : "lg"} className="button-gradient text-white rounded-full">
+        <Button 
+          size={isMobile ? "default" : "lg"} 
+          className="button-gradient text-white rounded-full"
+          onClick={() => setIsDialogOpen(true)}
+        >
           <Mail className="mr-2 h-4 w-4" />
           Contact Us Today
         </Button>
       </div>
+      
+      <SchedulingDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
     </section>
   );
 };

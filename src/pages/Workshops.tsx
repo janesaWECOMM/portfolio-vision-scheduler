@@ -1,6 +1,5 @@
 
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import WorkshopSection from "@/components/WorkshopSection";
 import CTASection from "@/components/CTASection";
 
@@ -22,7 +21,6 @@ const Workshops = () => {
         <WorkshopSection />
         <CTASection />
       </main>
-      <Footer />
     </div>
   );
 };
