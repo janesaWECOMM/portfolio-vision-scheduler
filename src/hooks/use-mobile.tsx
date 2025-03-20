@@ -1,5 +1,7 @@
+
 import * as React from "react"
 
+// Increase the mobile breakpoint slightly for better tablet support
 const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {

@@ -7,6 +7,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import WorkshopSection from "@/components/WorkshopSection";
 import CTASection from "@/components/CTASection";
 import FloatingContactButton from "@/components/FloatingContactButton";
+import Footer from "@/components/Footer";
 import { Element } from "react-scroll";
 
 const Index = () => {
@@ -31,6 +32,7 @@ const Index = () => {
           <CTASection />
         </Element>
       </main>
+      <Footer />
       <FloatingContactButton />
     </div>
   );
