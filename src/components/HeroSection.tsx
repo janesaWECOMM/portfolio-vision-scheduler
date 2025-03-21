@@ -1,3 +1,4 @@
+
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-scroll";
@@ -9,8 +10,8 @@ const HeroSection = () => {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-boost-light-purple/20 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/4"></div>
       </div>
 
-      <div className="container mx-auto py-12 md:py-16">
-        <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
+      <div className="container mx-auto py-8 md:py-12">
+        <div className="max-w-4xl mx-auto text-center space-y-4 md:space-y-6">
           <div className="flex justify-center">
             <span className="text-boost-orange md:text-7xl font-bold text-2xl">*</span>
           </div>
@@ -37,7 +38,7 @@ const HeroSection = () => {
             
           </div>
           
-          <div className="mt-8 md:mt-12 flex justify-center">
+          <div className="mt-6 md:mt-8 flex justify-center">
             <Button className="button-gradient text-white h-12 px-6 rounded-full animate-slide-down opacity-0" style={{
             animationDelay: "0.6s"
           }}>
