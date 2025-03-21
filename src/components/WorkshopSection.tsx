@@ -1,9 +1,10 @@
-
 import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 interface Workshop {
   id: string;
@@ -225,13 +226,27 @@ const WorkshopSection = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {workshops
-                      .filter(workshop => workshop.category === "101 Workshop")
-                      .map(workshop => (
-                        <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
-                      ))}
-                  </div>
+                  {isMobile ? (
+                    <ScrollArea className="w-full">
+                      <div className="flex space-x-4 pb-4 pl-1">
+                        {workshops
+                          .filter(workshop => workshop.category === "101 Workshop")
+                          .map(workshop => (
+                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                              <SimpleWorkshopCard workshop={workshop} />
+                            </div>
+                          ))}
+                      </div>
+                    </ScrollArea>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {workshops
+                        .filter(workshop => workshop.category === "101 Workshop")
+                        .map(workshop => (
+                          <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </TabsContent>
@@ -260,13 +275,27 @@ const WorkshopSection = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {workshops
-                      .filter(workshop => workshop.category === "Deep-dive Series")
-                      .map(workshop => (
-                        <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
-                      ))}
-                  </div>
+                  {isMobile ? (
+                    <ScrollArea className="w-full">
+                      <div className="flex space-x-4 pb-4 pl-1">
+                        {workshops
+                          .filter(workshop => workshop.category === "Deep-dive Series")
+                          .map(workshop => (
+                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                              <SimpleWorkshopCard workshop={workshop} />
+                            </div>
+                          ))}
+                      </div>
+                    </ScrollArea>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {workshops
+                        .filter(workshop => workshop.category === "Deep-dive Series")
+                        .map(workshop => (
+                          <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </TabsContent>
@@ -295,13 +324,27 @@ const WorkshopSection = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {workshops
-                      .filter(workshop => workshop.category === "Mastery Level")
-                      .map(workshop => (
-                        <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
-                      ))}
-                  </div>
+                  {isMobile ? (
+                    <ScrollArea className="w-full">
+                      <div className="flex space-x-4 pb-4 pl-1">
+                        {workshops
+                          .filter(workshop => workshop.category === "Mastery Level")
+                          .map(workshop => (
+                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                              <SimpleWorkshopCard workshop={workshop} />
+                            </div>
+                          ))}
+                      </div>
+                    </ScrollArea>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {workshops
+                        .filter(workshop => workshop.category === "Mastery Level")
+                        .map(workshop => (
+                          <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </TabsContent>
