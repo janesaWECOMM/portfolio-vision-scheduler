@@ -1,10 +1,16 @@
-import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
+import { Clock, Users, Book, GraduationCap, Presentation, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 interface Workshop {
   id: string;
@@ -186,169 +192,188 @@ const WorkshopSection = () => {
           </h2>
           <p className="text-xl text-muted-foreground mb-8">Our specialised workshops are designed to supercharge your skills in just 2 hours</p>
           
-          <Tabs defaultValue="101" className="w-full">
-            <TabsList className="grid grid-cols-3 mb-8">
-              <TabsTrigger value="101" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                <Book className="w-4 h-4 mr-1" />
-                101 Workshops
-              </TabsTrigger>
-              <TabsTrigger value="deep-dive" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                <Presentation className="w-4 h-4 mr-1" />
-                Deep-dive Series
-              </TabsTrigger>
-              <TabsTrigger value="mastery" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                <GraduationCap className="w-4 h-4 mr-1" />
-                Mastery Level
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="101" className="mt-0">
-              <div className="grid grid-cols-1 gap-8">
-                <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
-                  <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
-                  <p className="text-muted-foreground mb-6">{categoryDescriptions["101 Workshop"].description}</p>
-                  
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm">
-                        <Clock size={18} className="mr-2 text-boost-purple" />
-                        <span>{categoryDescriptions["101 Workshop"].duration}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Users size={18} className="mr-2 text-boost-purple" />
-                        <span>{categoryDescriptions["101 Workshop"].capacity}</span>
-                      </div>
-                    </div>
-                    
-                    <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
-                      {categoryDescriptions["101 Workshop"].price}
-                    </Badge>
+          {isMobile ? (
+            <Select defaultValue="101" onValueChange={(value) => {
+              const tabElement = document.querySelector(`[data-value="${value}"]`) as HTMLElement;
+              if (tabElement) tabElement.click();
+            }}>
+              <SelectTrigger className="w-full mb-8">
+                <SelectValue placeholder="Select workshop category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="101">
+                  <div className="flex items-center">
+                    <Book className="w-4 h-4 mr-2" />
+                    <span>101 Workshops</span>
                   </div>
-                </div>
-                <div>
-                  {isMobile ? (
-                    <ScrollArea className="w-full">
-                      <div className="flex space-x-4 pb-4 pl-1">
-                        {workshops
-                          .filter(workshop => workshop.category === "101 Workshop")
-                          .map(workshop => (
-                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
-                              <SimpleWorkshopCard workshop={workshop} />
-                            </div>
-                          ))}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {workshops
-                        .filter(workshop => workshop.category === "101 Workshop")
-                        .map(workshop => (
-                          <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="deep-dive" className="mt-0">
-              <div className="grid grid-cols-1 gap-8">
-                <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
-                  <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
-                  <p className="text-muted-foreground mb-6">{categoryDescriptions["Deep-dive Series"].description}</p>
-                  
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm">
-                        <Clock size={18} className="mr-2 text-boost-purple" />
-                        <span>{categoryDescriptions["Deep-dive Series"].duration}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Users size={18} className="mr-2 text-boost-purple" />
-                        <span>{categoryDescriptions["Deep-dive Series"].capacity}</span>
-                      </div>
-                    </div>
-                    
-                    <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
-                      {categoryDescriptions["Deep-dive Series"].price}
-                    </Badge>
+                </SelectItem>
+                <SelectItem value="deep-dive">
+                  <div className="flex items-center">
+                    <Presentation className="w-4 h-4 mr-2" />
+                    <span>Deep-dive Series</span>
                   </div>
-                </div>
-                <div>
-                  {isMobile ? (
-                    <ScrollArea className="w-full">
-                      <div className="flex space-x-4 pb-4 pl-1">
-                        {workshops
-                          .filter(workshop => workshop.category === "Deep-dive Series")
-                          .map(workshop => (
-                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
-                              <SimpleWorkshopCard workshop={workshop} />
-                            </div>
-                          ))}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {workshops
-                        .filter(workshop => workshop.category === "Deep-dive Series")
-                        .map(workshop => (
-                          <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="mastery" className="mt-0">
-              <div className="grid grid-cols-1 gap-8">
-                <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
-                  <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
-                  <p className="text-muted-foreground mb-6">{categoryDescriptions["Mastery Level"].description}</p>
-                  
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm">
-                        <Clock size={18} className="mr-2 text-boost-purple" />
-                        <span>{categoryDescriptions["Mastery Level"].duration}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Users size={18} className="mr-2 text-boost-purple" />
-                        <span>{categoryDescriptions["Mastery Level"].capacity}</span>
-                      </div>
-                    </div>
-                    
-                    <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
-                      {categoryDescriptions["Mastery Level"].price}
-                    </Badge>
+                </SelectItem>
+                <SelectItem value="mastery">
+                  <div className="flex items-center">
+                    <GraduationCap className="w-4 h-4 mr-2" />
+                    <span>Mastery Level</span>
                   </div>
-                </div>
-                <div>
-                  {isMobile ? (
-                    <ScrollArea className="w-full">
-                      <div className="flex space-x-4 pb-4 pl-1">
-                        {workshops
-                          .filter(workshop => workshop.category === "Mastery Level")
-                          .map(workshop => (
-                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
-                              <SimpleWorkshopCard workshop={workshop} />
-                            </div>
-                          ))}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {workshops
-                        .filter(workshop => workshop.category === "Mastery Level")
-                        .map(workshop => (
-                          <SimpleWorkshopCard key={workshop.id} workshop={workshop} />
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          ) : (
+            <Tabs defaultValue="101" className="w-full">
+              <TabsList className="grid grid-cols-3 mb-8">
+                <TabsTrigger 
+                  value="101" 
+                  className="data-[state=active]:button-gradient data-[state=active]:text-white px-3 py-2"
+                  data-value="101"
+                >
+                  <Book className="w-4 h-4 mr-2" />
+                  <span className="whitespace-nowrap">101 Workshops</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="deep-dive" 
+                  className="data-[state=active]:button-gradient data-[state=active]:text-white px-3 py-2"
+                  data-value="deep-dive"
+                >
+                  <Presentation className="w-4 h-4 mr-2" />
+                  <span className="whitespace-nowrap">Deep-dive Series</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="mastery" 
+                  className="data-[state=active]:button-gradient data-[state=active]:text-white px-3 py-2"
+                  data-value="mastery"
+                >
+                  <GraduationCap className="w-4 h-4 mr-2" />
+                  <span className="whitespace-nowrap">Mastery Level</span>
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          )}
+          
+          <Tabs defaultValue="101" className={isMobile ? "hidden" : "hidden"}>
+            <TabsTrigger value="101" data-value="101" className="hidden"></TabsTrigger>
+            <TabsTrigger value="deep-dive" data-value="deep-dive" className="hidden"></TabsTrigger>
+            <TabsTrigger value="mastery" data-value="mastery" className="hidden"></TabsTrigger>
           </Tabs>
+          
+          <TabsContent value="101" className="mt-0">
+            <div className="grid grid-cols-1 gap-8">
+              <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+                <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
+                <p className="text-muted-foreground mb-6">{categoryDescriptions["101 Workshop"].description}</p>
+                
+                <div className="flex justify-between items-center mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center text-sm">
+                      <Clock size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["101 Workshop"].duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Users size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["101 Workshop"].capacity}</span>
+                    </div>
+                  </div>
+                  
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
+                    {categoryDescriptions["101 Workshop"].price}
+                  </Badge>
+                </div>
+              </div>
+              <div>
+                <ScrollArea className="w-full">
+                  <div className="flex space-x-4 pb-4 pl-1">
+                    {workshops
+                      .filter(workshop => workshop.category === "101 Workshop")
+                      .map(workshop => (
+                        <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                          <SimpleWorkshopCard workshop={workshop} />
+                        </div>
+                      ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="deep-dive" className="mt-0">
+            <div className="grid grid-cols-1 gap-8">
+              <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+                <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
+                <p className="text-muted-foreground mb-6">{categoryDescriptions["Deep-dive Series"].description}</p>
+                
+                <div className="flex justify-between items-center mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center text-sm">
+                      <Clock size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Deep-dive Series"].duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Users size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Deep-dive Series"].capacity}</span>
+                    </div>
+                  </div>
+                  
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
+                    {categoryDescriptions["Deep-dive Series"].price}
+                  </Badge>
+                </div>
+              </div>
+              <div>
+                <ScrollArea className="w-full">
+                  <div className="flex space-x-4 pb-4 pl-1">
+                    {workshops
+                      .filter(workshop => workshop.category === "Deep-dive Series")
+                      .map(workshop => (
+                        <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                          <SimpleWorkshopCard workshop={workshop} />
+                        </div>
+                      ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="mastery" className="mt-0">
+            <div className="grid grid-cols-1 gap-8">
+              <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+                <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
+                <p className="text-muted-foreground mb-6">{categoryDescriptions["Mastery Level"].description}</p>
+                
+                <div className="flex justify-between items-center mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center text-sm">
+                      <Clock size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Mastery Level"].duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Users size={18} className="mr-2 text-boost-purple" />
+                      <span>{categoryDescriptions["Mastery Level"].capacity}</span>
+                    </div>
+                  </div>
+                  
+                  <Badge className="bg-boost-orange/10 text-boost-orange border-boost-orange text-base px-4 py-2 text-center">
+                    {categoryDescriptions["Mastery Level"].price}
+                  </Badge>
+                </div>
+              </div>
+              <div>
+                <ScrollArea className="w-full">
+                  <div className="flex space-x-4 pb-4 pl-1">
+                    {workshops
+                      .filter(workshop => workshop.category === "Mastery Level")
+                      .map(workshop => (
+                        <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                          <SimpleWorkshopCard workshop={workshop} />
+                        </div>
+                      ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </div>
+          </TabsContent>
         </div>
       </div>
     </section>
