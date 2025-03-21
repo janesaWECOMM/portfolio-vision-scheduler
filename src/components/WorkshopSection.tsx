@@ -1,3 +1,4 @@
+
 import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -202,7 +203,7 @@ const WorkshopSection = () => {
             
             <TabsContent value="101" className="mt-0">
               <div className="grid grid-cols-1 gap-8">
-                <div className="lg:sticky lg:top-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+                <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["101 Workshop"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["101 Workshop"].description}</p>
                   
@@ -237,7 +238,7 @@ const WorkshopSection = () => {
             
             <TabsContent value="deep-dive" className="mt-0">
               <div className="grid grid-cols-1 gap-8">
-                <div className="lg:sticky lg:top-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+                <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Deep-dive Series"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["Deep-dive Series"].description}</p>
                   
@@ -272,7 +273,7 @@ const WorkshopSection = () => {
             
             <TabsContent value="mastery" className="mt-0">
               <div className="grid grid-cols-1 gap-8">
-                <div className="lg:sticky lg:top-4 bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
+                <div className="bg-white/70 backdrop-blur-md border border-white/20 rounded-xl p-8">
                   <h3 className="text-2xl font-bold mb-4">{categoryDescriptions["Mastery Level"].title}</h3>
                   <p className="text-muted-foreground mb-6">{categoryDescriptions["Mastery Level"].description}</p>
                   
