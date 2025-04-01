@@ -12,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 const timeSlots = [
   "9:00 AM", "9:30 AM", 
@@ -23,23 +25,13 @@ const timeSlots = [
   "4:00 PM", "4:30 PM"
 ];
 
-const workshops = [
-  { id: "innovation-sprint", title: "Innovation Sprint" },
-  { id: "team-synergy", title: "Team Synergy" },
-  { id: "leadership-excellence", title: "Leadership Excellence" },
-  { id: "digital-transformation", title: "Digital Transformation" },
-  { id: "custom", title: "Custom Workshop" }
-];
-
 const Schedule = () => {
   const [searchParams] = useSearchParams();
   const initialWorkshop = searchParams.get("workshop") || "";
   
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [timeSlot, setTimeSlot] = useState<string | undefined>(undefined);
-  const [selectedWorkshop, setSelectedWorkshop] = useState(
-    workshops.find(w => w.id === initialWorkshop)?.id || ""
-  );
+  const [selectedWorkshop, setSelectedWorkshop] = useState(initialWorkshop);
   const [attendees, setAttendees] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -47,8 +39,32 @@ const Schedule = () => {
   const [message, setMessage] = useState("");
   const [meetingType, setMeetingType] = useState("virtual");
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { toast } = useToast();
+
+  // Fetch workshops from Supabase
+  const { data: workshops = [], isLoading } = useQuery({
+    queryKey: ['workshops'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('workshops')
+        .select('id, title, description')
+        .order('title');
+      
+      if (error) {
+        console.error('Error fetching workshops:', error);
+        toast({
+          title: "Failed to load workshops",
+          description: "Please try again later.",
+          variant: "destructive"
+        });
+        return [];
+      }
+      
+      return data || [];
+    }
+  });
   
   const handleNextStep = () => {
     if (currentStep === 1) {
@@ -89,27 +105,89 @@ const Schedule = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Here you would typically integrate with a backend service
-    // For now, we'll just show a success message
-    toast({
-      title: "Meeting scheduled!",
-      description: "We've received your request and will contact you shortly to confirm.",
-    });
+    if (!date || !timeSlot || !selectedWorkshop || !name || !email || !company) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
     
-    // Reset form
-    setDate(undefined);
-    setTimeSlot(undefined);
-    setSelectedWorkshop("");
-    setAttendees("");
-    setName("");
-    setEmail("");
-    setCompany("");
-    setMessage("");
-    setMeetingType("virtual");
-    setCurrentStep(1);
+    setIsSubmitting(true);
+    
+    try {
+      // Format date as YYYY-MM-DD for Supabase
+      const formattedDate = date.toISOString().split('T')[0];
+      
+      // Insert the appointment into Supabase
+      const { error } = await supabase
+        .from('appointments')
+        .insert({
+          workshop_id: selectedWorkshop,
+          date: formattedDate,
+          time_slot: timeSlot,
+          name,
+          email,
+          company,
+          attendees: attendees ? parseInt(attendees, 10) : null,
+          meeting_type: meetingType,
+          message: message || null,
+          status: 'pending'
+        });
+      
+      if (error) {
+        console.error('Error submitting appointment:', error);
+        
+        if (error.message.includes('appointment scheduled for this time')) {
+          toast({
+            title: "Time slot unavailable",
+            description: "This time slot is already booked. Please select another time.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Failed to schedule appointment",
+            description: "An error occurred. Please try again later.",
+            variant: "destructive"
+          });
+        }
+        
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Show success message
+      toast({
+        title: "Meeting scheduled!",
+        description: "We've received your request and will contact you shortly to confirm.",
+      });
+      
+      // Reset form
+      setDate(undefined);
+      setTimeSlot(undefined);
+      setSelectedWorkshop("");
+      setAttendees("");
+      setName("");
+      setEmail("");
+      setCompany("");
+      setMessage("");
+      setMeetingType("virtual");
+      setCurrentStep(1);
+      
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
@@ -121,7 +199,7 @@ const Schedule = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Schedule a <span className="text-gradient">Workshop Consultation</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground mb-8">
               Book a time to discuss how our workshops can help your team grow and succeed.
             </p>
           </div>
@@ -153,21 +231,27 @@ const Schedule = () => {
                 <div className="space-y-8 animate-fade-in">
                   <div>
                     <h2 className="text-2xl font-semibold mb-6">Select a Workshop</h2>
-                    <Select 
-                      value={selectedWorkshop} 
-                      onValueChange={setSelectedWorkshop}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a workshop" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {workshops.map((workshop) => (
-                          <SelectItem key={workshop.id} value={workshop.id}>
-                            {workshop.title}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    {isLoading ? (
+                      <div className="flex justify-center p-4">
+                        <div className="animate-spin h-6 w-6 border-2 border-boost-purple border-t-transparent rounded-full"></div>
+                      </div>
+                    ) : (
+                      <Select 
+                        value={selectedWorkshop} 
+                        onValueChange={setSelectedWorkshop}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a workshop" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {workshops.map((workshop) => (
+                            <SelectItem key={workshop.id} value={workshop.id}>
+                              {workshop.title}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
                   </div>
                   
                   <div className="grid md:grid-cols-2 gap-8">
@@ -418,8 +502,16 @@ const Schedule = () => {
                     <Button 
                       type="submit" 
                       className="button-gradient text-white px-8"
+                      disabled={isSubmitting}
                     >
-                      Confirm & Schedule
+                      {isSubmitting ? (
+                        <>
+                          <span className="mr-2">Scheduling...</span>
+                          <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        </>
+                      ) : (
+                        "Confirm & Schedule"
+                      )}
                     </Button>
                   </div>
                 </div>

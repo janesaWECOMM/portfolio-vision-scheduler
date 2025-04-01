@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 interface SchedulingDialogProps {
   open: boolean;
@@ -23,11 +26,33 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     company: "",
     message: ""
+  });
+  
+  const { toast } = useToast();
+
+  // Fetch default workshop (for quick bookings we'll use the first workshop)
+  const { data: workshops } = useQuery({
+    queryKey: ['workshops'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('workshops')
+        .select('id, title')
+        .order('title')
+        .limit(1);
+      
+      if (error) {
+        console.error('Error fetching default workshop:', error);
+        return [];
+      }
+      
+      return data || [];
+    }
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,18 +60,68 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate form submission
-    console.log("Scheduling request:", {
-      ...formData,
-      date: selectedDate,
-      time: selectedTime
-    });
+    if (!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.company) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
     
-    // Show success message and reset form
-    setStep(3);
+    setIsSubmitting(true);
+    
+    try {
+      const defaultWorkshopId = workshops && workshops.length > 0 ? workshops[0].id : null;
+      
+      // Insert the appointment into Supabase
+      const { error } = await supabase
+        .from('appointments')
+        .insert({
+          workshop_id: defaultWorkshopId,
+          date: selectedDate,
+          time_slot: selectedTime,
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          message: formData.message || null,
+          meeting_type: 'virtual',
+          status: 'pending',
+          attendees: null
+        });
+      
+      if (error) {
+        console.error('Error submitting appointment:', error);
+        
+        if (error.message.includes('appointment scheduled for this time')) {
+          toast({
+            title: "Time slot unavailable",
+            description: "This time slot is already booked. Please select another time.",
+            variant: "destructive"
+          });
+          setIsSubmitting(false);
+          return;
+        } else {
+          throw error;
+        }
+      }
+      
+      // Show success message and reset form
+      setStep(3);
+      
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetForm = () => {
@@ -191,6 +266,7 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
+                  required
                 />
               </div>
               
@@ -232,8 +308,16 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
               <Button 
                 type="submit"
                 className="button-gradient text-white"
+                disabled={isSubmitting}
               >
-                Schedule Meeting
+                {isSubmitting ? (
+                  <>
+                    <span className="mr-2">Scheduling...</span>
+                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                  </>
+                ) : (
+                  "Schedule Meeting"
+                )}
               </Button>
             </DialogFooter>
           </form>
