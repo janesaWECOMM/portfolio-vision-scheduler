@@ -1,4 +1,3 @@
-
 import { Clock, Users, Book, GraduationCap, Presentation, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -199,7 +198,6 @@ const WorkshopSection = () => {
                 <Select
                   defaultValue="101"
                   onValueChange={(value) => {
-                    // Find the tab with this value and click it
                     const tab = document.querySelector(`[data-value="${value}"]`);
                     if (tab) {
                       (tab as HTMLElement).click();
@@ -285,12 +283,12 @@ const WorkshopSection = () => {
                 </div>
                 <div>
                   {isMobile ? (
-                    <ScrollArea className="w-full">
-                      <div className="flex space-x-4 pb-4 pl-1">
+                    <ScrollArea className="w-full overflow-x-auto pb-4">
+                      <div className="flex space-x-4 pb-4 pl-1 min-w-full">
                         {workshops
                           .filter(workshop => workshop.category === "101 Workshop")
                           .map(workshop => (
-                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                            <div key={workshop.id} className="min-w-[280px] max-w-[280px] shrink-0">
                               <SimpleWorkshopCard workshop={workshop} />
                             </div>
                           ))}
@@ -334,12 +332,12 @@ const WorkshopSection = () => {
                 </div>
                 <div>
                   {isMobile ? (
-                    <ScrollArea className="w-full">
-                      <div className="flex space-x-4 pb-4 pl-1">
+                    <ScrollArea className="w-full overflow-x-auto pb-4">
+                      <div className="flex space-x-4 pb-4 pl-1 min-w-full">
                         {workshops
                           .filter(workshop => workshop.category === "Deep-dive Series")
                           .map(workshop => (
-                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                            <div key={workshop.id} className="min-w-[280px] max-w-[280px] shrink-0">
                               <SimpleWorkshopCard workshop={workshop} />
                             </div>
                           ))}
@@ -383,12 +381,12 @@ const WorkshopSection = () => {
                 </div>
                 <div>
                   {isMobile ? (
-                    <ScrollArea className="w-full">
-                      <div className="flex space-x-4 pb-4 pl-1">
+                    <ScrollArea className="w-full overflow-x-auto pb-4">
+                      <div className="flex space-x-4 pb-4 pl-1 min-w-full">
                         {workshops
                           .filter(workshop => workshop.category === "Mastery Level")
                           .map(workshop => (
-                            <div key={workshop.id} className="min-w-[280px] max-w-[280px]">
+                            <div key={workshop.id} className="min-w-[280px] max-w-[280px] shrink-0">
                               <SimpleWorkshopCard workshop={workshop} />
                             </div>
                           ))}
@@ -417,13 +415,20 @@ const SimpleWorkshopCard = ({ workshop }: { workshop: Workshop }) => {
   return (
     <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg flex flex-col h-full items-center justify-center text-center relative">
       {workshop.popular && (
-        <Badge className="bg-boost-orange text-white px-3 py-1 absolute top-0 right-0 translate-y-[-50%] translate-x-[10%] rounded-full">
-          <Star className="w-4 h-4 mr-1 fill-current" /> MOST POPULAR
+        <Badge className="bg-boost-orange text-white px-3 py-1 absolute top-0 right-0 translate-y-[-50%] translate-x-0 rounded-full z-10">
+          <Star className="w-3 h-3 mr-1 fill-current" /> POPULAR
         </Badge>
       )}
       <div className="mb-auto flex flex-col items-center justify-center w-full">
         <h3 className="text-xl font-bold mb-3">{workshop.title}</h3>
         <p className="text-muted-foreground mb-5">{workshop.description}</p>
+        <div className="flex items-center mb-4">
+          <Star className="w-4 h-4 text-boost-orange fill-current" />
+          <Star className="w-4 h-4 text-boost-orange fill-current" />
+          <Star className="w-4 h-4 text-boost-orange fill-current" />
+          <Star className="w-4 h-4 text-boost-orange fill-current" />
+          <Star className="w-4 h-4 text-boost-orange/50 fill-current" />
+        </div>
       </div>
       <Button size="sm">
         Schedule Now

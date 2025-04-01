@@ -1,4 +1,3 @@
-
 import { PlayCircle } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -7,7 +6,7 @@ const TeaserVideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section className="py-8 md:py-12 px-4 sm:px-6 bg-gradient-to-b from-boost-deep-purple/90 to-boost-purple/10">
+    <section className="py-8 md:py-12 px-4 sm:px-6 bg-gradient-to-b from-boost-deep-purple/90 to-background">
       <div className="container mx-auto">
         <div className="max-w-4xl mx-auto">
           <Dialog onOpenChange={(open) => setIsPlaying(open)}>
