@@ -7,8 +7,6 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -27,11 +25,9 @@ const timeSlots = [
 
 const Schedule = () => {
   const [searchParams] = useSearchParams();
-  const initialWorkshop = searchParams.get("workshop") || "";
   
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [timeSlot, setTimeSlot] = useState<string | undefined>(undefined);
-  const [selectedWorkshop, setSelectedWorkshop] = useState(initialWorkshop);
   const [attendees, setAttendees] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -43,35 +39,31 @@ const Schedule = () => {
   
   const { toast } = useToast();
 
-  // Fetch workshops from Supabase
-  const { data: workshops = [], isLoading } = useQuery({
-    queryKey: ['workshops'],
+  // Fetch default workshop
+  const { data: defaultWorkshop } = useQuery({
+    queryKey: ['default-workshop'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('workshops')
-        .select('id, title, description')
-        .order('title');
+        .select('id')
+        .limit(1)
+        .single();
       
       if (error) {
-        console.error('Error fetching workshops:', error);
-        toast({
-          title: "Failed to load workshops",
-          description: "Please try again later.",
-          variant: "destructive"
-        });
-        return [];
+        console.error('Error fetching default workshop:', error);
+        return null;
       }
       
-      return data || [];
+      return data;
     }
   });
   
   const handleNextStep = () => {
     if (currentStep === 1) {
-      if (!date || !timeSlot || !selectedWorkshop) {
+      if (!date || !timeSlot) {
         toast({
           title: "Please complete all fields",
-          description: "Please select a date, time, and workshop before proceeding.",
+          description: "Please select a date and time before proceeding.",
           variant: "destructive"
         });
         return;
@@ -108,7 +100,7 @@ const Schedule = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!date || !timeSlot || !selectedWorkshop || !name || !email || !company) {
+    if (!date || !timeSlot || !name || !email || !company || !defaultWorkshop) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields.",
@@ -127,7 +119,7 @@ const Schedule = () => {
       const { error } = await supabase
         .from('appointments')
         .insert({
-          workshop_id: selectedWorkshop,
+          workshop_id: defaultWorkshop.id,
           date: formattedDate,
           time_slot: timeSlot,
           name,
@@ -169,7 +161,6 @@ const Schedule = () => {
       // Reset form
       setDate(undefined);
       setTimeSlot(undefined);
-      setSelectedWorkshop("");
       setAttendees("");
       setName("");
       setEmail("");
@@ -229,31 +220,6 @@ const Schedule = () => {
             <form onSubmit={handleSubmit}>
               {currentStep === 1 && (
                 <div className="space-y-8 animate-fade-in">
-                  <div>
-                    <h2 className="text-2xl font-semibold mb-6">Select a Workshop</h2>
-                    {isLoading ? (
-                      <div className="flex justify-center p-4">
-                        <div className="animate-spin h-6 w-6 border-2 border-boost-purple border-t-transparent rounded-full"></div>
-                      </div>
-                    ) : (
-                      <Select 
-                        value={selectedWorkshop} 
-                        onValueChange={setSelectedWorkshop}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a workshop" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {workshops.map((workshop) => (
-                            <SelectItem key={workshop.id} value={workshop.id}>
-                              {workshop.title}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  </div>
-                  
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       <h2 className="text-2xl font-semibold mb-6">Choose a Date</h2>
@@ -418,13 +384,6 @@ const Schedule = () => {
                     
                     <div className="space-y-4">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Workshop:</span>
-                        <span className="font-medium">
-                          {workshops.find(w => w.id === selectedWorkshop)?.title || "Custom Workshop"}
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between">
                         <span className="text-muted-foreground">Date:</span>
                         <span className="font-medium">
                           {date ? date.toLocaleDateString('en-US', { 
@@ -526,3 +485,4 @@ const Schedule = () => {
 };
 
 export default Schedule;
+

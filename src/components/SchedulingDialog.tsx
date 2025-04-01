@@ -36,22 +36,22 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
   
   const { toast } = useToast();
 
-  // Fetch default workshop (for quick bookings we'll use the first workshop)
-  const { data: workshops } = useQuery({
-    queryKey: ['workshops'],
+  // Fetch default workshop
+  const { data: defaultWorkshop } = useQuery({
+    queryKey: ['default-workshop'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('workshops')
-        .select('id, title')
-        .order('title')
-        .limit(1);
+        .select('id')
+        .limit(1)
+        .single();
       
       if (error) {
         console.error('Error fetching default workshop:', error);
-        return [];
+        return null;
       }
       
-      return data || [];
+      return data;
     }
   });
 
@@ -63,7 +63,7 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.company) {
+    if (!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.company || !defaultWorkshop) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields.",
@@ -75,13 +75,11 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
     setIsSubmitting(true);
     
     try {
-      const defaultWorkshopId = workshops && workshops.length > 0 ? workshops[0].id : null;
-      
       // Insert the appointment into Supabase
       const { error } = await supabase
         .from('appointments')
         .insert({
-          workshop_id: defaultWorkshopId,
+          workshop_id: defaultWorkshop.id,
           date: selectedDate,
           time_slot: selectedTime,
           name: formData.name,
