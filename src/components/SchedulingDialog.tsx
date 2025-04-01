@@ -1,14 +1,15 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { getBookedTimeSlots, sendAppointmentConfirmation } from "@/utils/appointmentUtils";
 
 interface SchedulingDialogProps {
   open: boolean;
@@ -33,6 +34,8 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
     company: "",
     message: ""
   });
+  const [bookedTimeSlots, setBookedTimeSlots] = useState<string[]>([]);
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
   
   const { toast } = useToast();
 
@@ -55,6 +58,23 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
     }
   });
 
+  // Fetch booked time slots when date changes
+  useEffect(() => {
+    if (selectedDate) {
+      setIsCheckingAvailability(true);
+      getBookedTimeSlots(selectedDate)
+        .then(slots => {
+          setBookedTimeSlots(slots);
+        })
+        .catch(error => {
+          console.error('Error fetching booked slots:', error);
+        })
+        .finally(() => {
+          setIsCheckingAvailability(false);
+        });
+    }
+  }, [selectedDate]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -75,6 +95,27 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
     setIsSubmitting(true);
     
     try {
+      // Double-check availability before submitting
+      const { data: existingAppointments } = await supabase
+        .from('appointments')
+        .select('id')
+        .eq('date', selectedDate)
+        .eq('time_slot', selectedTime)
+        .limit(1);
+        
+      if (existingAppointments && existingAppointments.length > 0) {
+        toast({
+          title: "Time slot no longer available",
+          description: "This time slot has just been booked. Please select another time.",
+          variant: "destructive"
+        });
+        setIsSubmitting(false);
+        // Refresh availability
+        const updatedSlots = await getBookedTimeSlots(selectedDate);
+        setBookedTimeSlots(updatedSlots);
+        return;
+      }
+      
       // Insert the appointment into Supabase
       const { error } = await supabase
         .from('appointments')
@@ -106,6 +147,21 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
           throw error;
         }
       }
+      
+      // Send confirmation email
+      const formattedDate = new Date(selectedDate).toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      
+      await sendAppointmentConfirmation(
+        formData.name,
+        formData.email,
+        formattedDate,
+        selectedTime
+      );
       
       // Show success message and reset form
       setStep(3);
@@ -142,6 +198,10 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
     date.setDate(today.getDate() + i);
     return date;
   });
+
+  const isTimeSlotBooked = (timeSlot: string) => {
+    return bookedTimeSlots.includes(timeSlot);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -183,7 +243,10 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
                     <button
                       key={i}
                       type="button"
-                      onClick={() => setSelectedDate(dateStr)}
+                      onClick={() => {
+                        setSelectedDate(dateStr);
+                        setSelectedTime(null); // Reset time selection when date changes
+                      }}
                       className={cn(
                         "aspect-square p-2 flex items-center justify-center rounded-md hover:bg-accent text-sm",
                         selectedDate === dateStr 
@@ -199,25 +262,50 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
             </div>
 
             <div className="space-y-4">
-              <Label className="font-medium">Select a Time</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {timeSlots.map((time) => (
-                  <button
-                    key={time}
-                    type="button"
-                    onClick={() => setSelectedTime(time)}
-                    className={cn(
-                      "flex items-center justify-center gap-2 p-2 border rounded-md hover:bg-accent",
-                      selectedTime === time 
-                        ? "bg-primary text-primary-foreground border-primary" 
-                        : "bg-background border-input"
-                    )}
-                  >
-                    <Clock className="h-4 w-4" />
-                    {time}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between">
+                <Label className="font-medium">Select a Time</Label>
+                {isCheckingAvailability && (
+                  <span className="text-xs text-muted-foreground">
+                    Checking availability...
+                  </span>
+                )}
               </div>
+              <div className="grid grid-cols-3 gap-2">
+                {timeSlots.map((time) => {
+                  const isBooked = isTimeSlotBooked(time);
+                  
+                  return (
+                    <button
+                      key={time}
+                      type="button"
+                      onClick={() => !isBooked && setSelectedTime(time)}
+                      disabled={isBooked || !selectedDate}
+                      className={cn(
+                        "flex items-center justify-center gap-2 p-2 border rounded-md",
+                        isBooked 
+                          ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" 
+                          : selectedTime === time 
+                            ? "bg-primary text-primary-foreground border-primary" 
+                            : "bg-background border-input hover:bg-accent",
+                        !selectedDate && "cursor-not-allowed opacity-50"
+                      )}
+                    >
+                      <Clock className="h-4 w-4" />
+                      {time}
+                      {isBooked && (
+                        <span className="text-xs bg-destructive/20 text-destructive px-1 py-0.5 rounded">
+                          Booked
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+              {!selectedDate && (
+                <p className="text-xs text-muted-foreground">
+                  Please select a date to see available time slots.
+                </p>
+              )}
             </div>
 
             <Button 
@@ -324,12 +412,12 @@ export const SchedulingDialog = ({ open, onOpenChange }: SchedulingDialogProps) 
         {step === 3 && (
           <div className="py-6 space-y-6 text-center">
             <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-              <Calendar className="h-8 w-8 text-boost-purple" />
+              <Check className="h-8 w-8 text-green-600" />
             </div>
             <div className="space-y-2">
-              <h3 className="font-medium text-lg">Meeting Request Sent!</h3>
+              <h3 className="font-medium text-lg">Meeting Request Confirmed!</h3>
               <p className="text-muted-foreground">
-                We'll review your request and get back to you shortly with a confirmation.
+                We've sent a confirmation email with all the details.
               </p>
               {selectedDate && selectedTime && (
                 <p className="font-medium">
