@@ -1,10 +1,17 @@
-import { Clock, Users, Book, GraduationCap, Presentation, Star } from "lucide-react";
+
+import { Clock, Users, Book, GraduationCap, Presentation, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Workshop {
   id: string;
@@ -187,20 +194,71 @@ const WorkshopSection = () => {
           <p className="text-xl text-muted-foreground mb-8">Our specialised workshops are designed to supercharge your skills in just 2 hours</p>
           
           <Tabs defaultValue="101" className="w-full">
-            <TabsList className="grid grid-cols-3 mb-8">
-              <TabsTrigger value="101" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                <Book className="w-4 h-4 mr-1" />
-                101 Workshops
-              </TabsTrigger>
-              <TabsTrigger value="deep-dive" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                <Presentation className="w-4 h-4 mr-1" />
-                Deep-dive Series
-              </TabsTrigger>
-              <TabsTrigger value="mastery" className="data-[state=active]:button-gradient data-[state=active]:text-white">
-                <GraduationCap className="w-4 h-4 mr-1" />
-                Mastery Level
-              </TabsTrigger>
-            </TabsList>
+            {isMobile ? (
+              <div className="mb-8">
+                <Select
+                  defaultValue="101"
+                  onValueChange={(value) => {
+                    // Find the tab with this value and click it
+                    const tab = document.querySelector(`[data-value="${value}"]`);
+                    if (tab) {
+                      (tab as HTMLElement).click();
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select workshop category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="101">
+                      <div className="flex items-center">
+                        <Book className="w-4 h-4 mr-2" />
+                        <span>101 Workshops</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="deep-dive">
+                      <div className="flex items-center">
+                        <Presentation className="w-4 h-4 mr-2" />
+                        <span>Deep-dive Series</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="mastery">
+                      <div className="flex items-center">
+                        <GraduationCap className="w-4 h-4 mr-2" />
+                        <span>Mastery Level</span>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <TabsList className="grid grid-cols-3 mb-8 w-full">
+                <TabsTrigger 
+                  value="101" 
+                  className="data-[state=active]:button-gradient data-[state=active]:text-white px-3 py-2"
+                  data-value="101"
+                >
+                  <Book className="w-4 h-4 mr-1" />
+                  <span className="whitespace-nowrap">101 Workshops</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="deep-dive" 
+                  className="data-[state=active]:button-gradient data-[state=active]:text-white px-3 py-2"
+                  data-value="deep-dive"
+                >
+                  <Presentation className="w-4 h-4 mr-1" />
+                  <span className="whitespace-nowrap">Deep-dive Series</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="mastery" 
+                  className="data-[state=active]:button-gradient data-[state=active]:text-white px-3 py-2"
+                  data-value="mastery"
+                >
+                  <GraduationCap className="w-4 h-4 mr-1" />
+                  <span className="whitespace-nowrap">Mastery Level</span>
+                </TabsTrigger>
+              </TabsList>
+            )}
             
             <TabsContent value="101" className="mt-0">
               <div className="grid grid-cols-1 gap-8">
