@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { extendedSupabase } from "@/types/supabase";
 import { UserPlus, X } from "lucide-react";
 
 interface TeamMember {
@@ -39,7 +38,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
 
   const fetchTeamMembers = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await extendedSupabase
         .from('team_members')
         .select('*')
         .order('created_at', { ascending: false });
@@ -72,7 +71,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
 
     try {
       // First check if the user exists in auth
-      const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+      const { data: userData, error: userError } = await extendedSupabase.auth.admin.listUsers();
       
       if (userError) {
         throw userError;
@@ -91,7 +90,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
       }
 
       // Check if already a team member
-      const { data: existingMember, error: checkError } = await supabase
+      const { data: existingMember, error: checkError } = await extendedSupabase
         .from('team_members')
         .select('*')
         .eq('email', newMemberForm.email)
@@ -107,7 +106,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
       }
 
       // Add to team_members table
-      const { data, error } = await supabase
+      const { data, error } = await extendedSupabase
         .from('team_members')
         .insert([
           { 
@@ -159,7 +158,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
     }
 
     try {
-      const { error } = await supabase
+      const { error } = await extendedSupabase
         .from('team_members')
         .delete()
         .eq('id', member.id);

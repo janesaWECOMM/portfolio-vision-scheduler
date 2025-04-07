@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { extendedSupabase } from "@/types/supabase";
 
 /**
  * Check if a time slot is available on a given date
@@ -85,7 +86,7 @@ export const checkTeamAvailability = async (dayOfWeek: number, timeSlot: string)
     const formattedTime = timeFormat.toTimeString().split(' ')[0];
 
     // Query team_availability table to find any team members available at this day/time
-    const { data, error } = await supabase
+    const { data, error } = await extendedSupabase
       .from('team_availability')
       .select('*')
       .eq('day_of_week', dayOfWeek)

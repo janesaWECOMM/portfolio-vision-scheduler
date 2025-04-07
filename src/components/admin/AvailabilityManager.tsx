@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { extendedSupabase } from "@/types/supabase";
 import { Plus, Trash, Save } from "lucide-react";
 
 // Mapping for days of the week
@@ -60,10 +59,10 @@ const AvailabilityManager = () => {
 
   const fetchAvailability = async () => {
     try {
-      const { data: session } = await supabase.auth.getSession();
+      const { data: session } = await extendedSupabase.auth.getSession();
       if (!session.session) return;
 
-      const { data, error } = await supabase
+      const { data, error } = await extendedSupabase
         .from("team_availability")
         .select("*")
         .eq("team_member_id", session.session.user.id)
@@ -115,7 +114,7 @@ const AvailabilityManager = () => {
     // If it's an existing slot (has an ID), delete it from the database
     if (slot.id && !slot.isNew) {
       try {
-        const { error } = await supabase
+        const { error } = await extendedSupabase
           .from("team_availability")
           .delete()
           .eq("id", slot.id);
@@ -141,7 +140,7 @@ const AvailabilityManager = () => {
   const saveAllAvailability = async () => {
     setSaving(true);
     try {
-      const { data: session } = await supabase.auth.getSession();
+      const { data: session } = await extendedSupabase.auth.getSession();
       if (!session.session) {
         toast({
           title: "Not authenticated",
@@ -181,7 +180,7 @@ const AvailabilityManager = () => {
       // Perform updates
       if (slotsToUpdate.length > 0) {
         for (const slot of slotsToUpdate) {
-          const { error } = await supabase
+          const { error } = await extendedSupabase
             .from("team_availability")
             .update({
               day_of_week: slot.day_of_week,
@@ -197,7 +196,7 @@ const AvailabilityManager = () => {
 
       // Perform inserts
       if (slotsToInsert.length > 0) {
-        const { error } = await supabase
+        const { error } = await extendedSupabase
           .from("team_availability")
           .insert(slotsToInsert);
 

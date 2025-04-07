@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import { extendedSupabase } from "@/types/supabase";
 import AuthForm from "@/components/admin/AuthForm";
 import AvailabilityManager from "@/components/admin/AvailabilityManager";
 import TeamDashboard from "@/components/admin/TeamDashboard";
@@ -25,12 +24,12 @@ const Admin = () => {
     // Check authentication status
     const fetchSessionAndUser = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await extendedSupabase.auth.getSession();
         setSession(session);
 
         if (session) {
           // Check if user is a team member
-          const { data, error } = await supabase
+          const { data, error } = await extendedSupabase
             .from('team_members')
             .select('*')
             .eq('user_id', session.user.id)
@@ -53,14 +52,14 @@ const Admin = () => {
     fetchSessionAndUser();
 
     // Listen for auth changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(
+    const { data: authListener } = extendedSupabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
         setLoading(true);
         
         if (session) {
           // Check if user is a team member
-          const { data, error } = await supabase
+          const { data, error } = await extendedSupabase
             .from('team_members')
             .select('*')
             .eq('user_id', session.user.id)
@@ -85,7 +84,7 @@ const Admin = () => {
   }, []);
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await extendedSupabase.auth.signOut();
     
     if (error) {
       toast({
