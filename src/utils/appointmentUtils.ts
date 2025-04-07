@@ -74,3 +74,68 @@ export const sendAppointmentConfirmation = async (
     return false;
   }
 };
+
+/**
+ * Check if a team member is available at a specific day and time
+ */
+export const checkTeamAvailability = async (dayOfWeek: number, timeSlot: string): Promise<boolean> => {
+  try {
+    // Convert timeSlot (e.g. "9:00 AM") to 24-hour format for comparison ("09:00:00")
+    const timeFormat = new Date(`2000-01-01 ${timeSlot}`);
+    const formattedTime = timeFormat.toTimeString().split(' ')[0];
+
+    // Query team_availability table to find any team members available at this day/time
+    const { data, error } = await supabase
+      .from('team_availability')
+      .select('*')
+      .eq('day_of_week', dayOfWeek)
+      .lte('start_time', formattedTime)
+      .gte('end_time', formattedTime);
+    
+    if (error) {
+      console.error('Error checking team availability:', error);
+      return false;
+    }
+    
+    // If any team member is available during this time slot, return true
+    return data.length > 0;
+  } catch (error) {
+    console.error('Error in checkTeamAvailability:', error);
+    return false;
+  }
+};
+
+/**
+ * Get all available time slots for a specific date based on team availability
+ */
+export const getAvailableTimeSlots = async (
+  date: string, 
+  defaultTimeSlots: string[]
+): Promise<string[]> => {
+  try {
+    // Convert date string to day of week (0-6, where 0 is Sunday)
+    const dayOfWeek = new Date(date).getDay();
+    
+    // Get booked appointments for this date
+    const bookedSlots = await getBookedTimeSlots(date);
+    
+    // Filter available slots based on team availability and existing appointments
+    const availableSlots = [];
+    
+    for (const slot of defaultTimeSlots) {
+      if (!bookedSlots.includes(slot)) {
+        // Check if any team member is available for this slot
+        const isTeamAvailable = await checkTeamAvailability(dayOfWeek, slot);
+        
+        if (isTeamAvailable) {
+          availableSlots.push(slot);
+        }
+      }
+    }
+    
+    return availableSlots;
+  } catch (error) {
+    console.error('Error getting available time slots:', error);
+    return [];
+  }
+};
