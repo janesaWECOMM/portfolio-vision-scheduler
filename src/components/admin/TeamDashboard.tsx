@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,16 +72,16 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
 
     try {
       // First check if the user exists in auth
-      const { data: userData, error: userError } = await extendedSupabase.auth.admin.listUsers();
+      // Since we can't directly use admin.listUsers through the client,
+      // we'll modify this approach to check if the user exists first
+      const { data: existingUsers, error: userQueryError } = await extendedSupabase.auth.admin.getUserByEmail(newMemberForm.email);
       
-      if (userError) {
-        throw userError;
+      if (userQueryError) {
+        throw userQueryError;
       }
 
-      // Find user by email
-      const userToAdd = userData?.users?.find(u => u.email?.toLowerCase() === newMemberForm.email.toLowerCase());
-
-      if (!userToAdd) {
+      // Check if we found a user with this email
+      if (!existingUsers) {
         toast({
           title: "User not found",
           description: "This email is not registered. Ask them to create an account first.",
@@ -88,6 +89,8 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
         });
         return;
       }
+
+      const userToAdd = existingUsers.user;
 
       // Check if already a team member
       const { data: existingMember, error: checkError } = await extendedSupabase
