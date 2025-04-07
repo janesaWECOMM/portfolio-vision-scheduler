@@ -89,38 +89,33 @@ export const extendedSupabase = createClient<ExtendedDatabase>(SUPABASE_URL, SUP
   }
 });
 
-// Add a mock admin interface for client-side testing
-// In a production app, these operations would be handled by server functions
-extendedSupabase.auth.admin = {
-  getUserByEmail: async (email: string) => {
-    // This is a mock function that returns a user with the given email
-    // In a real application, this would be handled by a server function
+// Create a mock admin API function to search users by email
+// This isn't part of the official API and is client-side only
+export const findUserByEmail = async (email: string) => {
+  try {
+    // This is a mock function since we don't have server-side admin access
+    // In a real app, this would be handled by a server function
     const { data, error } = await extendedSupabase.auth.getSession();
     
     if (error) {
+      console.error("Error getting session:", error);
       return { data: null, error };
     }
     
     // Return a mocked user with the email
+    // In a real application, this would query the admin API
     return {
       data: {
         user: {
-          id: 'mock-id', // We'll use a mock ID that will be replaced by the actual user_id
+          id: 'mock-id', // We'll pretend this is the user's ID
           email,
           // Other user properties would be here
         }
       },
       error: null
     };
-  },
-  // Add other admin methods as needed
-  listUsers: async () => {
-    // Mock function that would typically be handled server-side
-    return {
-      data: {
-        users: []
-      },
-      error: null
-    };
+  } catch (error: any) {
+    console.error("Error in findUserByEmail:", error);
+    return { data: null, error };
   }
 };

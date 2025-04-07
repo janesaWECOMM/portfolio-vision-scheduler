@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { extendedSupabase } from "@/types/supabase";
+import { extendedSupabase, findUserByEmail } from "@/types/supabase";
 import { UserPlus, X } from "lucide-react";
 
 interface TeamMember {
@@ -71,17 +70,15 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
     setIsSubmitting(true);
 
     try {
-      // First check if the user exists in auth
-      // Since we can't directly use admin.listUsers through the client,
-      // we'll modify this approach to check if the user exists first
-      const { data: existingUsers, error: userQueryError } = await extendedSupabase.auth.admin.getUserByEmail(newMemberForm.email);
+      // First check if the user exists in auth using our mock function
+      const { data: existingUsers, error: userQueryError } = await findUserByEmail(newMemberForm.email);
       
       if (userQueryError) {
         throw userQueryError;
       }
 
       // Check if we found a user with this email
-      if (!existingUsers) {
+      if (!existingUsers || !existingUsers.user) {
         toast({
           title: "User not found",
           description: "This email is not registered. Ask them to create an account first.",
