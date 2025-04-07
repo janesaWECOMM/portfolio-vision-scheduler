@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -84,6 +85,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
           description: "This email is not registered. Ask them to create an account first.",
           variant: "destructive"
         });
+        setIsSubmitting(false);
         return;
       }
 
@@ -102,6 +104,7 @@ const TeamDashboard = ({ currentUserId }: TeamDashboardProps) => {
           description: "This email is already registered as a team member.",
           variant: "destructive"
         });
+        setIsSubmitting(false);
         return;
       }
 

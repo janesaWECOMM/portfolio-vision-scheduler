@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +18,7 @@ const Admin = () => {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isTeamMember, setIsTeamMember] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -32,10 +34,49 @@ const Admin = () => {
           const { data, error } = await extendedSupabase
             .from('team_members')
             .select('*')
-            .eq('user_id', session.user.id)
-            .single();
+            .eq('user_id', session.user.id);
 
-          if (data) {
+          // Check if team_members table is empty (first login scenario)
+          const { count, error: countError } = await extendedSupabase
+            .from('team_members')
+            .select('*', { count: 'exact', head: true });
+            
+          if (countError) {
+            console.error("Error checking team member count:", countError);
+          }
+          
+          // If this is the first user and no team members exist yet, 
+          // automatically make them the first admin
+          if (count === 0) {
+            setIsFirstLogin(true);
+            
+            // Create the first admin
+            const { error: insertError } = await extendedSupabase
+              .from('team_members')
+              .insert([
+                { 
+                  user_id: session.user.id, 
+                  name: session.user.email.split('@')[0], // Use email username as name
+                  email: session.user.email,
+                  role: 'admin' 
+                }
+              ]);
+              
+            if (insertError) {
+              console.error("Error creating first admin:", insertError);
+              toast({
+                title: "Error creating admin account",
+                description: insertError.message,
+                variant: "destructive"
+              });
+            } else {
+              toast({
+                title: "Admin account created",
+                description: "You've been set up as the first admin user.",
+              });
+              setIsTeamMember(true);
+            }
+          } else if (data && data.length > 0) {
             setIsTeamMember(true);
           } else if (error && error.code !== 'PGRST116') {
             // PGRST116 is for no rows returned
@@ -62,10 +103,9 @@ const Admin = () => {
           const { data, error } = await extendedSupabase
             .from('team_members')
             .select('*')
-            .eq('user_id', session.user.id)
-            .single();
+            .eq('user_id', session.user.id);
 
-          if (data) {
+          if (data && data.length > 0) {
             setIsTeamMember(true);
           } else {
             setIsTeamMember(false);
@@ -81,7 +121,7 @@ const Admin = () => {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, []);
+  }, [toast]);
 
   const handleSignOut = async () => {
     const { error } = await extendedSupabase.auth.signOut();
@@ -145,6 +185,7 @@ const Admin = () => {
             <div className="flex justify-between items-center">
               <p className="text-muted-foreground">
                 Signed in as: <span className="font-medium">{session?.user?.email}</span>
+                {isFirstLogin && <span className="ml-2 text-sm text-green-500">(Admin)</span>}
               </p>
               <Button variant="outline" onClick={handleSignOut} className="flex items-center gap-2">
                 <LogOut size={16} /> Sign Out
