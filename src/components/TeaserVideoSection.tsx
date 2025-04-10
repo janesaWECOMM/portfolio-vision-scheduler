@@ -6,8 +6,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 const TeaserVideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   
-  // Video source - replace with your external video URL
-  const videoSrc = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Example YouTube video
+  // Vimeo video source
+  const videoSrc = "https://player.vimeo.com/video/1074211616";
   
   return (
     <section className="py-8 md:py-12 px-4 sm:px-6 bg-gradient-to-b from-boost-deep-purple/90 to-background">
@@ -47,12 +47,12 @@ const TeaserVideoSection = () => {
             <DialogContent className="sm:max-w-3xl p-0 sm:p-6">
               {isPlaying && (
                 <div className="aspect-video w-full">
-                  {videoSrc.includes('youtube.com') ? (
+                  {videoSrc.includes('vimeo.com') ? (
                     <iframe
-                      src={videoSrc}
-                      title="Video Player"
+                      src={`${videoSrc}?badge=0&autopause=0&player_id=0&app_id=58479`}
+                      title="Boost Teaser Video"
                       className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
                       allowFullScreen
                     ></iframe>
                   ) : (
