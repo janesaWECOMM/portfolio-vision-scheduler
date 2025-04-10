@@ -1,11 +1,14 @@
 
-import { PlayCircle, Video } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const TeaserVideoSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-
+  
+  // Video source - replace with your external video URL
+  const videoSrc = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Example YouTube video
+  
   return (
     <section className="py-8 md:py-12 px-4 sm:px-6 bg-gradient-to-b from-boost-deep-purple/90 to-background">
       <div className="container mx-auto">
@@ -44,14 +47,24 @@ const TeaserVideoSection = () => {
             <DialogContent className="sm:max-w-3xl p-0 sm:p-6">
               {isPlaying && (
                 <div className="aspect-video w-full">
-                  <video 
-                    className="w-full h-full object-cover" 
-                    controls 
-                    autoPlay
-                  >
-                    <source src="/your-video-file.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  {videoSrc.includes('youtube.com') ? (
+                    <iframe
+                      src={videoSrc}
+                      title="Video Player"
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  ) : (
+                    <video 
+                      className="w-full h-full object-cover" 
+                      controls 
+                      autoPlay
+                    >
+                      <source src={videoSrc} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
                 </div>
               )}
             </DialogContent>
