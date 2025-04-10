@@ -1,4 +1,5 @@
-import { PlayCircle } from "lucide-react";
+
+import { PlayCircle, Video } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
@@ -43,13 +44,14 @@ const TeaserVideoSection = () => {
             <DialogContent className="sm:max-w-3xl p-0 sm:p-6">
               {isPlaying && (
                 <div className="aspect-video w-full">
-                  <iframe
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                    title="Boost Workshop Experience"
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                  <video 
+                    className="w-full h-full object-cover" 
+                    controls 
+                    autoPlay
+                  >
+                    <source src="/your-video-file.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               )}
             </DialogContent>
