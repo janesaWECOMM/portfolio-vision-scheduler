@@ -1,3 +1,4 @@
+
 import { Clock, Users, Book, GraduationCap, Presentation, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -283,7 +284,7 @@ const WorkshopSection = () => {
                 </div>
                 <div>
                   {isMobile ? (
-                    <ScrollArea className="w-full overflow-x-auto pb-4">
+                    <ScrollArea className="w-full pb-6 overflow-visible">
                       <div className="flex space-x-4 pb-4 pl-1 min-w-full">
                         {workshops
                           .filter(workshop => workshop.category === "101 Workshop")
@@ -332,7 +333,7 @@ const WorkshopSection = () => {
                 </div>
                 <div>
                   {isMobile ? (
-                    <ScrollArea className="w-full overflow-x-auto pb-4">
+                    <ScrollArea className="w-full pb-6 overflow-visible">
                       <div className="flex space-x-4 pb-4 pl-1 min-w-full">
                         {workshops
                           .filter(workshop => workshop.category === "Deep-dive Series")
@@ -381,7 +382,7 @@ const WorkshopSection = () => {
                 </div>
                 <div>
                   {isMobile ? (
-                    <ScrollArea className="w-full overflow-x-auto pb-4">
+                    <ScrollArea className="w-full pb-6 overflow-visible">
                       <div className="flex space-x-4 pb-4 pl-1 min-w-full">
                         {workshops
                           .filter(workshop => workshop.category === "Mastery Level")
@@ -413,9 +414,9 @@ const WorkshopSection = () => {
 
 const SimpleWorkshopCard = ({ workshop }: { workshop: Workshop }) => {
   return (
-    <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg flex flex-col h-full items-center justify-center text-center relative">
+    <div key={workshop.id} className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg flex flex-col h-full items-center justify-center text-center relative pt-10">
       {workshop.popular && (
-        <Badge className="bg-boost-orange text-white px-3 py-1 absolute top-0 right-0 translate-y-[-50%] translate-x-0 rounded-full z-10">
+        <Badge className="bg-boost-orange text-white px-3 py-1 absolute top-4 right-4 rounded-full z-10">
           <Star className="w-3 h-3 mr-1 fill-current" /> POPULAR
         </Badge>
       )}
