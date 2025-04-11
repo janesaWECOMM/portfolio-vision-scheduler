@@ -6,9 +6,9 @@ const TeaserVideoSection = () => {
   const videoSrc = "https://player.vimeo.com/video/1074211616";
   
   return (
-    <section className="py-8 md:py-12 px-4 sm:px-6 bg-gradient-to-b from-boost-deep-purple/90 to-background">
+    <section className="py-6 md:py-12 px-4 sm:px-6 bg-gradient-to-b from-boost-deep-purple/90 to-background">
       <div className="container mx-auto">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto px-2 sm:px-0">
           <div className="relative rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
             {/* Video Container */}
             <div className="aspect-video w-full">

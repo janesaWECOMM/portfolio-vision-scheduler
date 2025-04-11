@@ -14,20 +14,20 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
-        <Element name="home">
+        <Element name="home" className="section-padding">
           <HeroSection />
           <TeaserVideoSection />
         </Element>
-        <Element name="features">
+        <Element name="features" className="section-padding">
           <FeaturesSection />
         </Element>
-        <Element name="workshops">
+        <Element name="workshops" className="section-padding">
           <WorkshopSection />
         </Element>
-        <Element name="testimonials">
+        <Element name="testimonials" className="section-padding">
           <TestimonialsSection />
         </Element>
-        <Element name="contact">
+        <Element name="contact" className="section-padding">
           <CTASection />
         </Element>
       </main>

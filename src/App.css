@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -46,16 +47,16 @@
 /* Mobile optimizations */
 @media (max-width: 768px) {
   #root {
-    padding: 1rem;
+    padding: 0.5rem;
   }
   
   .section-padding {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
   
   .card {
-    padding: 1.25em;
+    padding: 1rem;
   }
   
   .overflow-x-auto {
@@ -65,6 +66,24 @@
   
   .overflow-x-auto::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
+  }
+  
+  /* Fix for stars on mobile */
+  .rating-stars {
+    display: flex;
+    flex-direction: row !important;
+  }
+  
+  /* Add more spacing between elements */
+  .mobile-spacing > * + * {
+    margin-top: 0.5rem;
+  }
+  
+  /* Ensure tabs don't get cut off */
+  .mobile-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
   }
 }
 
